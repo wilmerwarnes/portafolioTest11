@@ -2235,7 +2235,7 @@ window.addEventListener('wheel', (e) => {
     scrollTargetZ = Math.max(getMinCameraZ(), Math.min(getMaxCameraZ(), scrollTargetZ));
 
     if (snapTimeout) clearTimeout(snapTimeout);
-    snapTimeout = setTimeout(snapToNearestSection, SNAP_DELAY_MS);
+    snapTimeout = setTimeout(snapToNearestSection, isMobileViewport() ? 120 : SNAP_DELAY_MS);
 });
 
 let touchStartY = null;
@@ -2265,7 +2265,7 @@ window.addEventListener(
         scrollTargetZ = Math.max(getMinCameraZ(), Math.min(getMaxCameraZ(), scrollTargetZ));
 
         if (snapTimeout) clearTimeout(snapTimeout);
-        snapTimeout = setTimeout(snapToNearestSection, SNAP_DELAY_MS);
+        snapTimeout = setTimeout(snapToNearestSection, isMobileViewport() ? 120 : SNAP_DELAY_MS);
     },
     { passive: true }
 );
@@ -2521,9 +2521,10 @@ function animate() {
     if (starfield) starfield.rotation.y = time * 0.006;
 
     if (experienceStarted) {
-        camera.position.z += (scrollTargetZ - camera.position.z) * 0.05;
-
         const mobileMode = isMobileViewport();
+        const camLerp = mobileMode ? 0.09 : 0.05;
+        camera.position.z += (scrollTargetZ - camera.position.z) * camLerp;
+
         const inGallery3D = galleryOpen;
         if (!hoveringContactCard) {
             const suppressParallax = inGallery3D && galleryArrowHovered;
@@ -2533,11 +2534,11 @@ function animate() {
                 const base = inGallery3D ? 2.2 : 1.2;
                 targetX = mouseX * base * (mobileMode ? 0.7 : 1);
             }
-            camera.position.x += (targetX - camera.position.x) * 0.05;
+            camera.position.x += (targetX - camera.position.x) * camLerp;
 
             const yInfluence = suppressParallax ? 0 : mobileMode ? 0.15 : inGallery3D ? 0.15 : 0.6;
             const baseY = inGallery3D ? GALLERY_OBJECT_Y : 2;
-            camera.position.y += (baseY + mouseY * yInfluence - camera.position.y) * 0.05;
+            camera.position.y += (baseY + mouseY * yInfluence - camera.position.y) * camLerp;
         }
         const lookAtY = inGallery3D ? GALLERY_OBJECT_Y : 1;
         camera.lookAt(camera.position.x * 0.3, lookAtY, camera.position.z - 8);
