@@ -1525,9 +1525,12 @@ const GALLERY_TITLE_KEYS: Record<string, string> = {
 };
 
 async function loadPortfolioData(): Promise<void> {
-    const res = await fetch('portfolioData.json');
+    const base = (import.meta as any).env?.BASE_URL || '/';
+    const url = `${base}portfolioData.json`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
     portfolioData = (await res.json()) as PortfolioData;
-    initProjectCards();
+    if (portfolioData) initProjectCards();
 }
 
 function galleryTitleForCategory(category: string): string {
