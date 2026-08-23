@@ -245,6 +245,36 @@ audioMenuToggle?.addEventListener('click', (e) => {
 window.addEventListener('click', () => audioDropdown?.classList.remove('active'));
 audioDropdown?.addEventListener('click', (e) => e.stopPropagation());
 
+// --- MOBILE: controles idioma + música en un solo desplegable ---
+const mobileControlsToggle = document.getElementById('mobile-controls-toggle') as HTMLButtonElement | null;
+const hudControlsGroup = document.getElementById('hud-controls-group') as HTMLDivElement | null;
+if (mobileControlsToggle && hudControlsGroup) {
+    mobileControlsToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = hudControlsGroup.classList.toggle('mobile-open');
+        const icon = mobileControlsToggle.querySelector('i');
+        if (icon) icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-ellipsis';
+        playSFX('click');
+    });
+    // Cerrar al tocar fuera
+    document.addEventListener('click', (e) => {
+        if (!isMobileViewport()) return;
+        const target = e.target as HTMLElement;
+        if (!hudControlsGroup.contains(target) && !mobileControlsToggle.contains(target)) {
+            hudControlsGroup.classList.remove('mobile-open');
+            const icon = mobileControlsToggle.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-ellipsis';
+        }
+    });
+    window.addEventListener('resize', () => {
+        if (!isMobileViewport()) {
+            hudControlsGroup.classList.remove('mobile-open');
+            const icon = mobileControlsToggle.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-ellipsis';
+        }
+    });
+}
+
 function updateTrackDisplay() {
     if (trackNameDisplay) trackNameDisplay.innerText = tracks[currentTrackIndex].name;
 }
