@@ -1,0 +1,105 @@
+{
+  "3d": {
+    "title": "Dimensión 3D & Shaders",
+    "projects": [
+      {
+        "id": 1,
+        "name": "Torus Knot Dynamics",
+        "desc": "Simulacros avanzados con mallas poligonales y optimización WebGL.",
+        "img": "https://picsum.photos/seed/3d-1/1200/800",
+        "gallery": [
+          "https://picsum.photos/seed/3d-1a/600/450",
+          "https://picsum.photos/seed/3d-1b/600/450",
+          "https://picsum.photos/seed/3d-1c/600/450"
+        ],
+        "blocks": [
+          { "type": "text", "body": "Este es un proyecto de PRUEBA para mostrar como queda la pagina de caso estilo Behance. Este primer bloque de texto explica el proyecto: contexto, objetivo, rol dentro del equipo, herramientas usadas, etc." },
+          { "type": "image", "src": "https://picsum.photos/seed/case-3d-1-wide/1600/900" },
+          { "type": "video", "src": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "poster": "https://picsum.photos/seed/case-3d-1-video/1600/900" },
+          { "type": "text", "body": "Segundo bloque de texto, mas abajo en la pagina: por ejemplo el proceso de produccion, desafios tecnicos que resolviste, o el resultado final del proyecto." },
+          { "type": "grid", "images": ["https://picsum.photos/seed/case-3d-1-g1/700/700", "https://picsum.photos/seed/case-3d-1-g2/700/700", "https://picsum.photos/seed/case-3d-1-g3/700/700"] },
+          { "type": "gif", "src": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_animated_transparent.gif" }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Prismatic Spaces",
+        "desc": "Experimentación arquitectónica y volumetría digital inmersiva.",
+        "img": "https://picsum.photos/seed/3d-2/1200/800",
+        "gallery": [
+          "https://picsum.photos/seed/3d-2a/600/450",
+          "https://picsum.photos/seed/3d-2b/600/450",
+          "https://picsum.photos/seed/3d-2c/600/450"
+        ],
+        "blocks": [
+          { "type": "text", "body": "Experimentación arquitectónica y volumetría digital inmersiva. Este proyecto usa solo texto y una grilla de imagenes, sin video ni gif — para mostrar que cada proyecto puede tener la combinacion que quieras." },
+          { "type": "grid", "images": ["https://picsum.photos/seed/case-3d-2-g1/700/700", "https://picsum.photos/seed/case-3d-2-g2/700/700", "https://picsum.photos/seed/case-3d-2-g3/700/700", "https://picsum.photos/seed/case-3d-2-g4/700/700", "https://picsum.photos/seed/case-3d-2-g5/700/700", "https://picsum.photos/seed/case-3d-2-g6/700/700"] }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "CGI Character Rigging",
+        "desc": "Modelado orgánico y animación esquelética de personajes 3D.",
+        "img": "https://picsum.photos/seed/3d-3/1200/800",
+        "gallery": [
+          "https://picsum.photos/seed/3d-3a/600/450",
+          "https://picsum.photos/seed/3d-3b/600/450",
+          "https://picsum.photos/seed/3d-3c/600/450"
+        ],
+        "blocks": [
+          { "type": "text", "body": "Modelado orgánico y animación esquelética de personajes 3D. Este proyecto usa solo texto + una imagen ancha, ideal si no tenes mucho material para mostrar." },
+          { "type": "image", "src": "https://picsum.photos/seed/case-3d-3-wide/1600/900" }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "GLSL Custom Shaders",
+        "desc": "Efectos visuales procedurales basados en matemáticas y shaders.",
+        "img": "https://picsum.photos/seed/3d-4/1200/800",
+        "gallery": [
+          "https://picsum.photos/seed/3d-4a/600/450",
+          "https://picsum.photos/seed/3d-4b/600/450",
+          "https://picsum.photos/seed/3d-4c/600/450"
+        ],
+        "blocks": [
+          { "type": "text", "body": "Efectos visuales procedurales basados en matemáticas y shaders. Este proyecto muestra solo texto + video, por ejemplo para un reel o demo tecnica." },
+          { "type": "video", "src": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", "poster": "https://picsum.photos/seed/case-3d-4-video/1600/900" }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Virtual Environment",
+        "desc": "Diseño de mundos virtuales interactivos optimizados para web.",
+        "img": "https://picsum.photos/seed/3d-5/1200/800",
+        "gallery": [
+          "https://picsum.photos/seed/3d-5a/600/450",
+          "https://picsum.photos/seed/3d-5b/600/450",
+          "https://picsum.photos/seed/3d-5c/600/450"
+        ],
+        "blocks": [
+          { "type": "text", "body": "Diseño de mundos virtuales interactivos optimizados para web. Este proyecto usa texto + un gif, util para mostrar un loop corto de animacion o interaccion." },
+          { "type": "gif", "src": "https://upload.wikimedia.org/wikipedia/commons/7/71/Rotating_earth_(large).gif" }
+        ]
+      }
+    ]},
+    "diseno": {
+      "title": "Posts & Branding Gráfico",
+      "projects": [
+        { "id": 1, "name": "Bee Zero Logistics", "desc": "Sistemas corporativos integrados e identidades visuales sostenibles.", "img": "https://picsum.photos/seed/dis-1/1200/800", "gallery": ["https://picsum.photos/seed/dis-1a/600/450", "https://picsum.photos/seed/dis-1b/600/450", "https://picsum.photos/seed/dis-1c/600/450"] },
+        { "id": 2, "name": "Eco Delivery Branding", "desc": "Estrategia triple impacto y diseño de marca enfocado en Cochabamba.", "img": "https://picsum.photos/seed/dis-2/1200/800", "gallery": ["https://picsum.photos/seed/dis-2a/600/450", "https://picsum.photos/seed/dis-2b/600/450", "https://picsum.photos/seed/dis-2c/600/450"] },
+        { "id": 3, "name": "Sumaya Cowork", "desc": "Identidad visual, buyer personas y campañas publicitarias integrales.", "img": "https://picsum.photos/seed/dis-3/1200/800", "gallery": ["https://picsum.photos/seed/dis-3a/600/450", "https://picsum.photos/seed/dis-3b/600/450", "https://picsum.photos/seed/dis-3c/600/450"] },
+        { "id": 4, "name": "BeerStory Campaign", "desc": "Campaña publicitaria de cerveza premium con temática mesopotámica.", "img": "https://picsum.photos/seed/dis-4/1200/800", "gallery": ["https://picsum.photos/seed/dis-4a/600/450", "https://picsum.photos/seed/dis-4b/600/450", "https://picsum.photos/seed/dis-4c/600/450"] },
+        { "id": 5, "name": "Editorial & Book Fair", "desc": "Dirección de arte, agendas literarias y diseño de interiores para eventos.", "img": "https://picsum.photos/seed/dis-5/1200/800", "gallery": ["https://picsum.photos/seed/dis-5a/600/450", "https://picsum.photos/seed/dis-5b/600/450", "https://picsum.photos/seed/dis-5c/600/450"] }
+      ]
+    },
+    "edicion": {
+        "title": "Video & Animación 2D",
+        "projects": [
+          { "id": 1, "name": "VFX Motion Reel", "desc": "Postproducción dinámica, ritmo audiovisual y composición de elementos CGI.", "img": "https://picsum.photos/seed/edi-1/1200/800", "gallery": ["https://picsum.photos/seed/edi-1a/600/450", "https://picsum.photos/seed/edi-1b/600/450", "https://picsum.photos/seed/edi-1c/600/450"] },
+          { "id": 2, "name": "Commercial Spot Edit", "desc": "Edición de video publicitario de alto impacto con transiciones fluidas.", "img": "https://picsum.photos/seed/edi-2/1200/800", "gallery": ["https://picsum.photos/seed/edi-2a/600/450", "https://picsum.photos/seed/edi-2b/600/450", "https://picsum.photos/seed/edi-2c/600/450"] },
+          { "id": 3, "name": "Color Grading Masterclass", "desc": "Corrección de color cinematográfica y estética visual avanzada.", "img": "https://picsum.photos/seed/edi-3/1200/800", "gallery": ["https://picsum.photos/seed/edi-3a/600/450", "https://picsum.photos/seed/edi-3b/600/450", "https://picsum.photos/seed/edi-3c/600/450"] },
+          { "id": 4, "name": "Sound Design Integration", "desc": "Sincronización de audio, efectos foley y mezcla para piezas multimedia.", "img": "https://picsum.photos/seed/edi-4/1200/800", "gallery": ["https://picsum.photos/seed/edi-4a/600/450", "https://picsum.photos/seed/edi-4b/600/450", "https://picsum.photos/seed/edi-4c/600/450"] },
+          { "id": 5, "name": "Social Media Dynamics", "desc": "Contenido dinámico optimizado para plataformas digitales y agencias.", "img": "https://picsum.photos/seed/edi-5/1200/800", "gallery": ["https://picsum.photos/seed/edi-5a/600/450", "https://picsum.photos/seed/edi-5b/600/450", "https://picsum.photos/seed/edi-5c/600/450"] }
+        ]
+      }
+    }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">Wilmer Warnes | Portafolio 3D Experiential</title>
+    <link rel="icon" type="image/png" href="assets/brand/sign_wilmer.png">
+
+    <!-- TIPOGRAFIA — Montserrat (titulares, ExtraBold/Black) + Poppins
+         (texto general, Regular/Medium/SemiBold). Ver style.css: variables
+         --font-heading / --font-body y el bloque de selectores de titulos
+         al final del archivo. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Pantalla de Carga: eleccion de MUSICA (switch) e IDIOMA (boton ES/EN)
+         lado a lado, antes de arrancar la experiencia. -->
+    <div id="loader">
+        <h1>Wilmer Warnes</h1>
+        <div class="loader-bar-container">
+            <div class="loader-bar" id="bar"></div>
+        </div>
+        <button id="start-btn" data-i18n="start_btn">Explorar Experiencia 3D</button>
+
+        <div class="loader-options">
+            <button class="loader-toggle is-on" id="music-choice-btn" type="button" role="switch" aria-checked="true">
+                <span class="loader-toggle-track"><span class="loader-toggle-thumb"></span></span>
+                <span class="loader-toggle-text" id="music-choice-label">🔊 Con música</span>
+            </button>
+            <button class="loader-lang-btn" id="loader-lang-btn" title="Español / English">ES</button>
+        </div>
+    </div>
+
+    <header class="hud-header">
+        <button class="brand-logo" onclick="goToBrandHome()" aria-label="Ir a Inicio">
+            <img src="assets/brand/sign_wilmer.png" alt="Wilmer Warnes">
+        </button>
+
+        <nav class="hud-nav" id="hud-nav">
+            <button class="nav-shortcut" data-section-index="0" onclick="jumpToSection(0)" data-i18n="nav_home">Inicio</button>
+            <button class="nav-shortcut" data-section-index="1" onclick="jumpToSection(1)" data-i18n="nav_about">Sobre Mí</button>
+            <button class="nav-shortcut" data-section-index="2" onclick="jumpToSection(2)" data-i18n="nav_projects">Proyectos</button>
+            <button class="nav-shortcut" data-section-index="3" onclick="jumpToSection(3)" data-i18n="nav_contact">Contacto</button>
+        </nav>
+
+        <div class="hud-controls" id="hud-controls">
+            <button class="control-btn" id="lang-toggle-btn" title="Cambiar Idioma / Change Language">ES</button>
+
+            <div class="audio-menu-container">
+                <button class="control-btn" id="audio-menu-toggle" title="Opciones de Audio"><i class="fa-solid fa-music"></i></button>
+                <div class="audio-dropdown" id="audio-dropdown">
+                    <h4 data-i18n="audio_title">Centro de Audio Pro</h4>
+                    <div class="audio-option">
+                        <label data-i18n="audio_status">Estado</label>
+                        <button id="master-audio-btn" class="sub-btn" data-i18n="audio_pause">Pausar</button>
+                    </div>
+                    <div class="audio-option audio-nav-row">
+                        <label data-i18n="audio_track">Pista Actual</label>
+                        <div class="track-selector-box">
+                            <button id="prev-track" class="sub-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span id="track-name-display">Cargando...</span>
+                            <button id="next-track" class="sub-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="audio-option">
+                        <label data-i18n="audio_vol_music">Volumen Música</label>
+                        <input type="range" id="volume-slider-music" min="0" max="1" step="0.05" value="0.3">
+                    </div>
+                    <div class="audio-option">
+                        <label data-i18n="audio_vol_sfx">Volumen Efectos</label>
+                        <input type="range" id="volume-slider-sfx" min="0" max="1" step="0.05" value="0.5">
+                    </div>
+                    <div class="audio-option">
+                        <label data-i18n="audio_sfx">Efectos UI (SFX)</label>
+                        <input type="checkbox" id="sfx-toggle" checked>
+                    </div>
+                    <div class="audio-option">
+                        <label data-i18n="glow_label">Brillo Tarjetas</label>
+                        <input type="range" id="glow-slider" min="0" max="3" step="0.1" value="1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- CAPA CSS3D — Proyectos (x3), Perfil y Contacto viven acá en escritorio y móvil.
+         En móvil se reescala la misma capa (ver main.js: PROJECT_CARD_SCALE_MOBILE, etc.). -->
+    <div id="css3d-layer"></div>
+
+    <!-- Flechas para cambiar de categoría (3D / Diseño / Edición) SOLO en móvil:
+         en pantalla angosta las 3 cards se superponen, se muestra una centrada
+         a la vez y estas flechas cambian cuál. -->
+    <div class="cat-switch-nav" id="cat-switch-nav">
+        <button class="gallery-arrow gallery-arrow-left" id="cat-prev" aria-label="Categoria anterior"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="gallery-arrow gallery-arrow-right" id="cat-next" aria-label="Categoria siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <div class="gallery-hud" id="gallery-hud">
+        <div class="gallery-hud-top">
+            <h2 class="gallery-hud-title" id="gallery-title">Proyectos</h2>
+        </div>
+        <button class="gallery-arrow gallery-arrow-left" id="gallery-prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="gallery-arrow gallery-arrow-right" id="gallery-next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="gallery-hud-bottom">
+            <button class="back-btn" onclick="closeGallery()"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="modal_back">Volver</span></button>
+        </div>
+    </div>
+
+    <script type="module" src="main.ts"></script>
+</body>
+</html>
