@@ -598,17 +598,21 @@ function createGalaxyBackgroundTexture(colors?: string[]) {
     const ctx = c.getContext('2d')!;
     const center = size / 2;
     const grad = ctx.createRadialGradient(center, center, 0, center, center, size / 2);
-    // MISMOS colores en móvil y desktop - idénticos visualmente, optimización intacta (solo tamaño cambia)
-    const c0 = (colors && colors[0]) || '#212d3b';
-    const c1 = (colors && colors[1]) || '#152035';
-    const c2 = (colors && colors[2]) || '#0e1520';
-    const c3 = (colors && colors[3]) || '#080c15';
-    const c4 = (colors && colors[4]) || '#04060a';
+    // COLORES SEPARADOS: edita SOLO MOBILE_* para probar sin tocar desktop
+    const MOBILE_C0 = '#050608'; const DESKTOP_C0 = '#212d3b';
+    const MOBILE_C1 = '#f11606'; const DESKTOP_C1 = '#152035';
+    const MOBILE_C2 = '#020305'; const DESKTOP_C2 = '#0e1520';
+    const MOBILE_C3 = '#eb190a'; const DESKTOP_C3 = '#080c15';
+    const MOBILE_C4 = '#010102'; const DESKTOP_C4 = '#04060a';
+    const c0 = (colors && colors[0]) || (isMobile ? MOBILE_C0 : DESKTOP_C0);
+    const c1 = (colors && colors[1]) || (isMobile ? MOBILE_C1 : DESKTOP_C1);
+    const c2 = (colors && colors[2]) || (isMobile ? MOBILE_C2 : DESKTOP_C2);
+    const c3 = (colors && colors[3]) || (isMobile ? MOBILE_C3 : DESKTOP_C3);
+    const c4 = (colors && colors[4]) || (isMobile ? MOBILE_C4 : DESKTOP_C4);
     if (isMobile) {
-        grad.addColorStop(0.00, c0);
-        grad.addColorStop(0.12, c1);
-        grad.addColorStop(0.25, c2);
-        grad.addColorStop(0.45, c3);
+        // MÓVIL: solo 3 paradas → halo más definido y menos cálculo
+        grad.addColorStop(0.01, c0);
+        grad.addColorStop(0.40, c2);
         grad.addColorStop(1.00, c4);
     } else {
         grad.addColorStop(0.00, c0);
@@ -630,7 +634,7 @@ const FOG_DENSITY = 0.02;
 scene.fog = new THREE.FogExp2(0x0d0c1c, FOG_DENSITY);
 
 const DESKTOP_FOV = 48;
-const MOBILE_FOV = 68;
+const MOBILE_FOV = 66;
 
 const camera = new THREE.PerspectiveCamera(
     isMobileViewport() ? MOBILE_FOV : DESKTOP_FOV,
@@ -2167,6 +2171,11 @@ function goToSection(index) {
     updateActiveNavHighlight();
     updateScrollHintVisibility();
     updateCategorySwitchVisibility();
+    // FIX móvil: si entramos a Proyectos, fuerza el mazo (corrige el flash desktop del inicio)
+    if (isMobileViewport() && index === 2) {
+        requestAnimationFrame(() => applyResponsiveProjectCards());
+        setTimeout(() => applyResponsiveProjectCards(), 100);
+    }
 }
 
 function snapToNearestSection() {
