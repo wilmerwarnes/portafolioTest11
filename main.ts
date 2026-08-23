@@ -599,11 +599,19 @@ function createGalaxyBackgroundTexture(colors?: string[]) {
     const c2 = (colors && colors[2]) || '#0e1520';
     const c3 = (colors && colors[3]) || '#080c15';
     const c4 = (colors && colors[4]) || '#04060a';
-    grad.addColorStop(0.00, c0);
-    grad.addColorStop(0.25, c1);
-    grad.addColorStop(0.50, c2);
-    grad.addColorStop(0.75, c3);
-    grad.addColorStop(1.00, c4);
+    if (isMobile) {
+        grad.addColorStop(0.00, c0);
+        grad.addColorStop(0.12, c1);
+        grad.addColorStop(0.25, c2);
+        grad.addColorStop(0.45, c3);
+        grad.addColorStop(1.00, c4);
+    } else {
+        grad.addColorStop(0.00, c0);
+        grad.addColorStop(0.25, c1);
+        grad.addColorStop(0.50, c2);
+        grad.addColorStop(0.75, c3);
+        grad.addColorStop(1.00, c4);
+    }
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, c.width, c.height);
     const texture = new THREE.CanvasTexture(c);
