@@ -1526,11 +1526,33 @@ const GALLERY_TITLE_KEYS: Record<string, string> = {
 
 async function loadPortfolioData(): Promise<void> {
     const base = (import.meta as any).env?.BASE_URL || '/';
-    const url = `${base}portfolioData.json`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
-    portfolioData = (await res.json()) as PortfolioData;
-    if (portfolioData) initProjectCards();
+    const urls = [`${base}portfolioData.json`, 'portfolioData.json', './portfolioData.json', '/portfolioData.json'];
+    let lastErr: any = null;
+    for (const url of urls) {
+        try {
+            console.log('[loadPortfolioData] fetching', url);
+            const res = await fetch(url);
+            if (!res.ok) { lastErr = new Error(`Failed ${url}: ${res.status}`); continue; }
+            const text = await res.text();
+            // Si devuelve HTML (fallback de SPA), no es JSON
+            if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+                lastErr = new Error(`Got HTML not JSON from ${url}`);
+                continue;
+            }
+            portfolioData = JSON.parse(text) as PortfolioData;
+            console.log('[loadPortfolioData] OK from', url, 'keys:', portfolioData ? Object.keys(portfolioData) : null);
+            if (portfolioData && portfolioData['3d']) {
+                initProjectCards();
+                return;
+            }
+        } catch (e) { lastErr = e; console.warn('[loadPortfolioData] fail', url, e); }
+    }
+    console.error('[loadPortfolioData] all urls failed', lastErr);
+    // Fallback mínimo para que no quede null y las cards se creen
+    if (!portfolioData) {
+        portfolioData = { '3d': { title: '3D', projects: [] }, diseno: { title: 'Diseño', projects: [] }, edicion: { title: 'Edición', projects: [] } } as any;
+        initProjectCards();
+    }
 }
 
 function galleryTitleForCategory(category: string): string {
@@ -1573,12 +1595,12 @@ const projectCardInstances = [];
 
 function buildCardElement(catSpec) {
     const t = translations[currentLang];
-    const catData = portfolioData?.[catSpec.key];
-    if (!catData) {
-        console.error('[buildCardElement] Category data not found for:', catSpec.key, 'Available:', portfolioData ? Object.keys(portfolioData) : 'null');
+    const catData = (portfolioData as any)?.[catSpec.key];
+    if (!catData || !catData.projects || catData.projects.length === 0) {
+        console.error('[buildCardElement] Category data not found for:', catSpec.key, 'Available:', portfolioData ? Object.keys(portfolioData as any) : 'null', 'catData:', catData);
         const el = document.createElement('div');
         el.className = 'proj-card';
-        el.innerHTML = '<div class="pc-inner">Error: no data</div>';
+        el.innerHTML = '<div class="pc-inner">Cargando...</div>';
         return el;
     }
     const el = document.createElement('div');
