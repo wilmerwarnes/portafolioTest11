@@ -44,6 +44,10 @@ let openLightbox: (cat: string, id: number) => void;
 let closeLightbox: () => void;
 let jumpToSection: (sectionIndex: number) => void;
 
+// Global state that must be declared early to avoid TDZ
+let currentSectionIndex = 0;
+let portfolioData: PortfolioData | null = null;
+
 // --- DETECCION DE MOVIL ---
 function isMobileViewport(): boolean {
     return window.innerWidth <= 900;
@@ -586,7 +590,8 @@ const scene = new THREE.Scene();
 function createGalaxyBackgroundTexture(colors?: string[]) {
     // Mantenemos textura CUADRADA en ambos (mobile 512, desktop 1024) para gradiente circular perfecto.
     // Cambiar a rectangular en móvil estiraba el degradado y dejaba bordes claros a los lados.
-    const size = isMobileViewport() ? 512 : 1024;
+    const isMobile = isMobileViewport();
+    const size = isMobile ? 512 : 1024;
     const c = document.createElement('canvas');
     c.width = size;
     c.height = size;
@@ -1513,8 +1518,6 @@ let categoryCenterIndex = 0;
 // animate() se suma encima de esto, no lo reemplaza — ver mas abajo).
 const categoryCardBaseRotY: Record<string, number> = {};
 
-let portfolioData: PortfolioData | null = null;
-
 const GALLERY_TITLE_KEYS: Record<string, string> = {
     '3d': 'gallery_title_3d',
     diseno: 'gallery_title_diseno',
@@ -1811,7 +1814,6 @@ function getMinCameraZ() {
     return last.objectZ + sectionOffset(last);
 }
 
-let currentSectionIndex = 0;
 let scrollTargetZ = SECTIONS[0].objectZ + sectionOffset(SECTIONS[0]);
 
 const SCROLL_SENSITIVITY = 0.08;
