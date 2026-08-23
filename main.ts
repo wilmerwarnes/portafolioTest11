@@ -584,31 +584,26 @@ const scene = new THREE.Scene();
 // "Fondo (prueba)" en el menu de audio, BACKGROUND_PRESETS mas abajo).
 // ==========================================================================
 function createGalaxyBackgroundTexture(colors?: string[]) {
-    const isMobile = isMobileViewport();
-    const size = isMobile ? 512 : 1024;
+    // Mantenemos textura CUADRADA en ambos (mobile 512, desktop 1024) para gradiente circular perfecto.
+    // Cambiar a rectangular en móvil estiraba el degradado y dejaba bordes claros a los lados.
+    const size = isMobileViewport() ? 512 : 1024;
     const c = document.createElement('canvas');
-    // En móvil, ajustamos el canvas al aspect ratio de la pantalla para evitar compresión
-    const aspectRatio = window.innerWidth / window.innerHeight;
     c.width = size;
-    c.height = isMobile ? Math.round(size / aspectRatio) : size;
+    c.height = size;
     const ctx = c.getContext('2d')!;
-    // Centro del gradiente radial centrado correctamente
-    const centerX = c.width / 2;
-    const centerY = c.height / 2;
-    const radius = Math.max(c.width, c.height) / 2;
-    const grad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-    // MISMOS colores en móvil y desktop - idénticos visualmente
+    const center = size / 2;
+    const grad = ctx.createRadialGradient(center, center, 0, center, center, size / 2);
+    // MISMOS colores en móvil y desktop - idénticos visualmente, optimización intacta (solo tamaño cambia)
     const c0 = (colors && colors[0]) || '#212d3b';
     const c1 = (colors && colors[1]) || '#152035';
     const c2 = (colors && colors[2]) || '#0e1520';
     const c3 = (colors && colors[3]) || '#080c15';
     const c4 = (colors && colors[4]) || '#04060a';
-    // Distribución suave con 5 paradas de color para transición suave
-    grad.addColorStop(0.00, c0);   // Centro
-    grad.addColorStop(0.25, c1);   // Primer anillo
-    grad.addColorStop(0.50, c2);   // Medio - transición suave
-    grad.addColorStop(0.75, c3);   // Segundo anillo
-    grad.addColorStop(1.00, c4);   // Borde
+    grad.addColorStop(0.00, c0);
+    grad.addColorStop(0.25, c1);
+    grad.addColorStop(0.50, c2);
+    grad.addColorStop(0.75, c3);
+    grad.addColorStop(1.00, c4);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, c.width, c.height);
     const texture = new THREE.CanvasTexture(c);
@@ -1655,8 +1650,24 @@ CARD_CATEGORIES.forEach((catSpec) => {
 });
 scene.add(projectCardsHitGroup);
 
+const cssCardGroups: Record<string, CSS3DObject> = {};
+CARD_CATEGORIES.forEach((catSpec) => {
+    const cardEl = buildCardElement(catSpec);
+    const cssObj = new CSS3DObject(cardEl);
+    const scale = projectCardScale();
+    cssObj.scale.set(scale, scale, scale);
+    cssObj.position.set(catSpec.slot * PROJECTS_SPREAD_X_DESKTOP, 1, -42);
+    cssScene.add(cssObj);
+    cssCardGroups[catSpec.key] = cssObj;
+});
+Object.assign(window, { cssCardGroups });
+
 function initProjectCards(): void {
-    const cssCardGroups: Record<string, CSS3DObject> = {};
+    // Compat: si se llama de nuevo (lazy), recrea
+    Object.keys(cssCardGroups).forEach(k => {
+        try { cssScene.remove(cssCardGroups[k]); } catch {}
+        delete (cssCardGroups as any)[k];
+    });
     CARD_CATEGORIES.forEach((catSpec) => {
         const cardEl = buildCardElement(catSpec);
         const cssObj = new CSS3DObject(cardEl);
@@ -1666,7 +1677,6 @@ function initProjectCards(): void {
         cssScene.add(cssObj);
         cssCardGroups[catSpec.key] = cssObj;
     });
-    // Assign to global for later access
     Object.assign(window, { cssCardGroups });
 }
 
@@ -2422,7 +2432,8 @@ window.addEventListener('resize', () => {
     updateCategorySwitchVisibility();
     if (isMobileViewport()) clearProjectCardsHover();
     updateScrollHintVisibility();
-    // Recrear fondo en resize para adaptar aspect ratio
+    // Recrear fondo en resize para adaptar tamaño mobile/desktop
+    if (scene.background && (scene.background as any).dispose) (scene.background as THREE.Texture).dispose();
     scene.background = createGalaxyBackgroundTexture();
 });
 
