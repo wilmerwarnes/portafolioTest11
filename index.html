@@ -19,26 +19,23 @@
 </head>
 <body>
 
-    <!-- Pantalla de Carga: tortuguita nadando en círculo -->
+    <!-- Pantalla de Carga: olas blancas → negro pintando desde abajo -->
     <div id="loader">
-        <div class="turtle-loader" id="turtle-loader">
-            <div class="turtle-orbit" id="turtle-orbit">
-                <img src="assets/turtle.svg" alt="turtle" class="turtle-img">
-            </div>
-            <svg class="progress-ring" width="240" height="240" viewBox="0 0 240 240">
-                <circle class="progress-ring-bg" cx="120" cy="120" r="90" />
-                <circle class="progress-ring-fill" id="progress-ring-fill" cx="120" cy="120" r="90" />
+        <div class="wave-fill" id="wave-fill">
+            <svg class="wave-top" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,60 C150,120 350,0 600,60 C800,90 1000,30 1200,60 L1200,120 L0,120 Z" fill="#000"></path>
             </svg>
-            <div class="loading-text">loading...</div>
         </div>
-        <button id="start-btn" data-i18n="start_btn" style="display:none;">Ver portafolio de Wilmer Warnes</button>
-
-        <div class="loader-options" style="display:none;">
-            <button class="loader-icon-btn is-on" id="music-choice-btn" type="button" role="switch" aria-checked="true" title="Música">
-                <i class="fa-solid fa-music"></i>
-                <span class="loader-icon-text" id="music-choice-label">ON</span>
-            </button>
-            <button class="loader-icon-btn" id="loader-lang-btn" title="Español / English">ES</button>
+        <div class="loader-content">
+            <div class="loading-text" id="loading-text-wave">loading...</div>
+            <button id="start-btn" data-i18n="start_btn" style="display:none;">Ver portafolio de Wilmer Warnes</button>
+            <div class="loader-options" style="display:none;">
+                <button class="loader-icon-btn is-on" id="music-choice-btn" type="button" role="switch" aria-checked="true" title="Música">
+                    <i class="fa-solid fa-music"></i>
+                    <span class="loader-icon-text" id="music-choice-label">ON</span>
+                </button>
+                <button class="loader-icon-btn" id="loader-lang-btn" title="Español / English">ES</button>
+            </div>
         </div>
     </div>
 

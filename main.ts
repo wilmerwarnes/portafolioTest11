@@ -446,28 +446,27 @@ function playSFX(presetName) {
     if (p.noise) playNoiseBurst(p.dur * 0.6, p.noiseFreq, sfxVolume * 0.18);
 }
 
-// --- LOADER — tortuguita ---
+// --- LOADER — olas blanco → negro ---
 let progress = 0;
 const bar = document.getElementById('bar') as HTMLDivElement | null;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
-const turtleLoader = document.getElementById('turtle-loader') as HTMLDivElement | null;
-const progressRingFill = document.getElementById('progress-ring-fill') as unknown as SVGCircleElement | null;
+const waveFill = document.getElementById('wave-fill') as HTMLDivElement | null;
+const loadingTextWave = document.getElementById('loading-text-wave') as HTMLDivElement | null;
 const loaderOptions = document.querySelector('.loader-options') as HTMLDivElement | null;
-const CIRC = 2 * Math.PI * 90; // r=90
 
 const interval = setInterval(() => {
     progress += 25;
     const pct = Math.min(progress, 100);
     if (bar) bar.style.width = pct + '%';
-    if (progressRingFill) progressRingFill.style.strokeDashoffset = String(CIRC - (CIRC * pct) / 100);
+    if (waveFill) waveFill.style.height = pct + '%';
     if (progress >= 100) {
         clearInterval(interval);
         if (bar) bar.style.width = '100%';
-        if (progressRingFill) progressRingFill.style.strokeDashoffset = '0';
-        // Oculta tortuguita y muestra botón + opciones
+        if (waveFill) waveFill.style.height = '100%';
+        // Muestra botón + opciones sobre el negro
         setTimeout(() => {
-            if (turtleLoader) turtleLoader.style.display = 'none';
+            if (loadingTextWave) loadingTextWave.style.display = 'none';
             if (startBtn) { startBtn.style.display = 'block'; startBtn.style.opacity = '1'; }
             if (loaderOptions) loaderOptions.style.display = 'flex';
         }, 400);
