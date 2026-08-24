@@ -100,8 +100,6 @@ const translations: Translations = {
         scroll_hint_start: 'Desliza la pantalla para ir a la siguiente sección',
         scroll_hint_mid: 'Desliza la pantalla para avanzar o retroceder',
         scroll_hint_end: 'Desliza la pantalla hacia atrás para volver',
-        scroll_hint_desktop_start: 'Haz scroll hacia arriba para avanzar',
-        scroll_hint_desktop_end: 'Haz scroll hacia abajo para retroceder',
     },
     en: {
         title: 'Wilmer Warnes | 3D Experiential Portfolio',
@@ -121,8 +119,6 @@ const translations: Translations = {
         glow_label: 'Card Glow',
         instructions: 'Use Mouse to look • Scroll or Top Menu to navigate • Click 3D objects',
         modal_back: 'Back',
-        scroll_hint_desktop_start: 'Scroll up to advance',
-        scroll_hint_desktop_end: 'Scroll down to go back',
         music_choice_on: '🔊 With music',
         music_choice_off: '🔇 Without music',
         loader_lang_label: 'Language',

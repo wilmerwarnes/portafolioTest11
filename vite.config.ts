@@ -14,5 +14,9 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    // Configurar MIME type para archivos .glb
+    mimeTypes: {
+      'glb': 'model/gltf-binary',
+    },
   },
 });

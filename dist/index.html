@@ -15,35 +15,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script type="module" crossorigin src="/portafolioTest11/assets/index-oXohaAX-.js"></script>
-  <link rel="stylesheet" crossorigin href="/portafolioTest11/assets/index-VXtzj6AV.css">
+  <script type="module" crossorigin src="/portafolioTest11/assets/index-C02_OhlY.js"></script>
+  <link rel="stylesheet" crossorigin href="/portafolioTest11/assets/index-BDQt45Mz.css">
 </head>
 <body>
 
-    <!-- Pantalla de Carga: ejemplo exacto con 3 capas y fill 18%->100% -->
+    <!-- Pantalla de Carga: eleccion de MUSICA (switch) e IDIOMA (boton ES/EN)
+         lado a lado, antes de arrancar la experiencia. -->
     <div id="loader">
-        <div class="wave-wrap" id="waveWrap">
-            <svg class="wave back" viewBox="0 0 2880 200" preserveAspectRatio="none">
-                <path d="M0,120 C120,60 240,60 360,120 C480,180 600,180 720,120 C840,60 960,60 1080,120 C1200,180 1320,180 1440,120 C1560,60 1680,60 1800,120 C1920,180 2040,180 2160,120 C2280,60 2400,60 2520,120 C2640,180 2760,180 2880,120 L2880,200 L0,200 Z" />
-            </svg>
-            <svg class="wave mid" viewBox="0 0 2880 200" preserveAspectRatio="none">
-                <path d="M0,110 C90,150 180,150 270,110 C360,70 450,70 540,110 C630,150 720,150 810,110 C900,70 990,70 1080,110 C1170,150 1260,150 1350,110 C1440,70 1440,70 1440,110 C1530,150 1620,150 1710,110 C1800,70 1890,70 1980,110 C2070,150 2160,150 2250,110 C2340,70 2430,70 2520,110 C2610,150 2700,150 2790,110 C2880,70 2880,70 2880,110 L2880,200 L0,200 Z" />
-            </svg>
-            <svg class="wave front" viewBox="0 0 2880 200" preserveAspectRatio="none">
-                <path d="M0,130 C80,90 160,90 240,130 C320,170 400,170 480,130 C560,90 640,90 720,130 C800,170 880,170 960,130 C1040,90 1120,90 1200,130 C1280,170 1360,170 1440,130 C1520,90 1600,90 1680,130 C1760,170 1840,170 1920,130 C2000,90 2080,90 2160,130 C2240,170 2320,170 2400,130 C2480,90 2560,90 2640,130 C2720,170 2800,170 2880,130 L2880,200 L0,200 Z" />
-            </svg>
+        <h1>Wilmer Warnes</h1>
+        <div class="loader-bar-container">
+            <div class="loader-bar" id="bar"></div>
         </div>
-        <div class="percent" id="percent">CARGANDO 0%</div>
-        <div class="loader-content">
-            <div class="loading-text" id="loading-text-wave">loading...</div>
-            <button id="start-btn" data-i18n="start_btn" style="display:none;">Ver portafolio de Wilmer Warnes</button>
-            <div class="loader-options" style="display:none;">
-                <button class="loader-icon-btn is-on" id="music-choice-btn" type="button" role="switch" aria-checked="true" title="Música">
-                    <i class="fa-solid fa-music"></i>
-                    <span class="loader-icon-text" id="music-choice-label">ON</span>
-                </button>
-                <button class="loader-icon-btn" id="loader-lang-btn" title="Español / English">ES</button>
-            </div>
+        <button id="start-btn" data-i18n="start_btn">Explorar Experiencia 3D</button>
+
+        <div class="loader-options">
+            <button class="loader-toggle is-on" id="music-choice-btn" type="button" role="switch" aria-checked="true">
+                <span class="loader-toggle-track"><span class="loader-toggle-thumb"></span></span>
+                <span class="loader-toggle-text" id="music-choice-label">🔊 Con música</span>
+            </button>
+            <button class="loader-lang-btn" id="loader-lang-btn" title="Español / English">ES</button>
         </div>
     </div>
 
