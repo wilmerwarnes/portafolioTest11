@@ -59,7 +59,7 @@ let currentLang: 'es' | 'en' = 'es';
 const translations: Translations = {
     es: {
         title: 'Wilmer Warnes | Portafolio 3D Experiential',
-        start_btn: 'Explorar Experiencia 3D',
+        start_btn: 'Ver portafolio de Wilmer Warnes',
         nav_home: 'Inicio',
         nav_about: 'Sobre Mí',
         nav_projects: 'Proyectos',
@@ -109,7 +109,7 @@ const translations: Translations = {
     },
     en: {
         title: 'Wilmer Warnes | 3D Experiential Portfolio',
-        start_btn: 'Explore 3D Experience',
+        start_btn: 'View Wilmer Warnes Portfolio',
         nav_home: 'Home',
         nav_about: 'About Me',
         nav_projects: 'Projects',
@@ -446,19 +446,32 @@ function playSFX(presetName) {
     if (p.noise) playNoiseBurst(p.dur * 0.6, p.noiseFreq, sfxVolume * 0.18);
 }
 
-// --- LOADER ---
+// --- LOADER — tortuguita ---
 let progress = 0;
 const bar = document.getElementById('bar') as HTMLDivElement | null;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
+const turtleLoader = document.getElementById('turtle-loader') as HTMLDivElement | null;
+const progressRingFill = document.getElementById('progress-ring-fill') as unknown as SVGCircleElement | null;
+const loaderOptions = document.querySelector('.loader-options') as HTMLDivElement | null;
+const CIRC = 2 * Math.PI * 90; // r=90
 
 const interval = setInterval(() => {
     progress += 25;
+    const pct = Math.min(progress, 100);
+    if (bar) bar.style.width = pct + '%';
+    if (progressRingFill) progressRingFill.style.strokeDashoffset = String(CIRC - (CIRC * pct) / 100);
     if (progress >= 100) {
         clearInterval(interval);
         if (bar) bar.style.width = '100%';
-        if (startBtn) startBtn.style.opacity = '1';
-    } else if (bar) bar.style.width = progress + '%';
+        if (progressRingFill) progressRingFill.style.strokeDashoffset = '0';
+        // Oculta tortuguita y muestra botón + opciones
+        setTimeout(() => {
+            if (turtleLoader) turtleLoader.style.display = 'none';
+            if (startBtn) { startBtn.style.display = 'block'; startBtn.style.opacity = '1'; }
+            if (loaderOptions) loaderOptions.style.display = 'flex';
+        }, 400);
+    }
 }, 100);
 
 let wantsMusicOnStart = true;
@@ -466,12 +479,12 @@ const musicChoiceBtn = document.getElementById('music-choice-btn') as HTMLButton
 const musicChoiceLabel = document.getElementById('music-choice-label') as HTMLSpanElement | null;
 
 function updateMusicChoiceLabel() {
-    const t = translations[currentLang];
-    if (musicChoiceLabel)
-        musicChoiceLabel.innerText = wantsMusicOnStart ? t.music_choice_on : t.music_choice_off;
+    if (musicChoiceLabel) musicChoiceLabel.innerText = wantsMusicOnStart ? 'ON' : 'OFF';
     if (musicChoiceBtn) {
         musicChoiceBtn.classList.toggle('is-on', wantsMusicOnStart);
         musicChoiceBtn.setAttribute('aria-checked', wantsMusicOnStart ? 'true' : 'false');
+        const icon = musicChoiceBtn.querySelector('i');
+        if (icon) icon.className = wantsMusicOnStart ? 'fa-solid fa-music' : 'fa-solid fa-volume-xmark';
     }
 }
 musicChoiceBtn?.addEventListener('click', () => {

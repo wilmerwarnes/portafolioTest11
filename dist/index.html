@@ -15,26 +15,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script type="module" crossorigin src="/portafolioTest11/assets/index-BeLyHcJ-.js"></script>
-  <link rel="stylesheet" crossorigin href="/portafolioTest11/assets/index-CUhNrqLS.css">
+  <script type="module" crossorigin src="/portafolioTest11/assets/index-Dn-jewWx.js"></script>
+  <link rel="stylesheet" crossorigin href="/portafolioTest11/assets/index-D0GXBRTb.css">
 </head>
 <body>
 
-    <!-- Pantalla de Carga: eleccion de MUSICA (switch) e IDIOMA (boton ES/EN)
-         lado a lado, antes de arrancar la experiencia. -->
+    <!-- Pantalla de Carga: tortuguita nadando en círculo -->
     <div id="loader">
-        <h1>Wilmer Warnes</h1>
-        <div class="loader-bar-container">
-            <div class="loader-bar" id="bar"></div>
+        <div class="turtle-loader" id="turtle-loader">
+            <div class="turtle-orbit" id="turtle-orbit">
+                <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%20fill='white'%3e%3c!--%20Shell%20--%3e%3cpath%20d='M50%2022%20L62%2030%20L62%2052%20L50%2062%20L38%2052%20L38%2030%20Z'%20stroke='white'%20stroke-width='1.5'%20stroke-linejoin='round'/%3e%3cpath%20d='M38%2030%20L50%2038%20L62%2030%20M50%2038%20L50%2062%20M38%2052%20L62%2052%20M38%2030%20L38%2052%20M62%2030%20L62%2052'%20stroke='white'%20stroke-width='1.2'%20fill='none'%20stroke-linejoin='round'/%3e%3c!--%20Head%20--%3e%3cellipse%20cx='50'%20cy='14'%20rx='8'%20ry='6'/%3e%3c!--%20Flippers%20--%3e%3cellipse%20cx='24'%20cy='32'%20rx='9'%20ry='5'%20transform='rotate(-35%2024%2032)'/%3e%3cellipse%20cx='76'%20cy='32'%20rx='9'%20ry='5'%20transform='rotate(35%2076%2032)'/%3e%3cellipse%20cx='24'%20cy='62'%20rx='9'%20ry='5'%20transform='rotate(35%2024%2062)'/%3e%3cellipse%20cx='76'%20cy='62'%20rx='9'%20ry='5'%20transform='rotate(-35%2076%2062)'/%3e%3c!--%20Tail%20--%3e%3cpath%20d='M50%2062%20Q50%2075%2050%2082%20Q48%2075%2050%2082%20Q52%2075%2050%2062'%20/%3e%3c/svg%3e" alt="turtle" class="turtle-img">
+            </div>
+            <svg class="progress-ring" width="240" height="240" viewBox="0 0 240 240">
+                <circle class="progress-ring-bg" cx="120" cy="120" r="90" />
+                <circle class="progress-ring-fill" id="progress-ring-fill" cx="120" cy="120" r="90" />
+            </svg>
+            <div class="loading-text">loading...</div>
         </div>
-        <button id="start-btn" data-i18n="start_btn">Explorar Experiencia 3D</button>
+        <button id="start-btn" data-i18n="start_btn" style="display:none;">Ver portafolio de Wilmer Warnes</button>
 
-        <div class="loader-options">
-            <button class="loader-toggle is-on" id="music-choice-btn" type="button" role="switch" aria-checked="true">
-                <span class="loader-toggle-track"><span class="loader-toggle-thumb"></span></span>
-                <span class="loader-toggle-text" id="music-choice-label">🔊 Con música</span>
+        <div class="loader-options" style="display:none;">
+            <button class="loader-icon-btn is-on" id="music-choice-btn" type="button" role="switch" aria-checked="true" title="Música">
+                <i class="fa-solid fa-music"></i>
+                <span class="loader-icon-text" id="music-choice-label">ON</span>
             </button>
-            <button class="loader-lang-btn" id="loader-lang-btn" title="Español / English">ES</button>
+            <button class="loader-icon-btn" id="loader-lang-btn" title="Español / English">ES</button>
         </div>
     </div>
 

@@ -22,12 +22,21 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 
 #loader {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: #000000; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    background: #0e8a5e; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center;
     transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1);
 }
-#loader h1 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 20px; color: #fff; }
-.loader-bar-container { width: 300px; height: 2px; background: rgba(255,255,255,0.2); margin-bottom: 30px; position: relative; overflow: hidden; }
-.loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #fff; transition: width 0.3s ease; }
+#loader h1 { display: none; }
+.loader-bar-container { display: none; }
+.loader-bar { display: none; }
+
+.turtle-loader { position: relative; width: 240px; height: 240px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
+.turtle-orbit { position: absolute; inset: 0; animation: turtleOrbit 2.4s linear infinite; }
+.turtle-img { position: absolute; top: 6px; left: 50%; width: 42px; height: 42px; transform: translateX(-50%); filter: brightness(0) invert(1); object-fit: contain; }
+.progress-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); pointer-events: none; }
+.progress-ring-bg { fill: none; stroke: rgba(255,255,255,0.18); stroke-width: 2; stroke-dasharray: 6 10; stroke-linecap: round; }
+.progress-ring-fill { fill: none; stroke: #ffffff; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 565.48; stroke-dashoffset: 565.48; transition: stroke-dashoffset 0.3s ease; }
+.loading-text { position: absolute; color: #ffffff; font-weight: 600; font-size: 1.15rem; letter-spacing: 0.5px; text-transform: lowercase; }
+@keyframes turtleOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 #start-btn {
     position: relative;
@@ -54,53 +63,26 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 #start-btn:active { transform: scale(1.02) translateY(-1px); }
 
 .loader-options {
-    margin-top: 22px;
+    margin-top: 18px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
     flex-wrap: wrap;
     justify-content: center;
 }
-
-.loader-toggle {
-    display: flex; align-items: center; gap: 10px;
-    background: transparent; border: none; cursor: pointer; padding: 6px 10px 6px 6px;
-    border-radius: 30px; transition: background 0.3s;
-}
-.loader-toggle:hover { background: rgba(255,255,255,0.06); }
-.loader-toggle-track {
-    position: relative; width: 46px; height: 26px; border-radius: 999px;
-    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28);
-    transition: background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-    flex-shrink: 0;
-}
-.loader-toggle-thumb {
-    position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%;
-    background: #cfcfcf; box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
-}
-.loader-toggle.is-on .loader-toggle-track {
-    background: rgba(255,255,255,0.22);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-color: rgba(255,255,255,0.65);
-    box-shadow: 0 0 16px 2px rgba(255,255,255,0.32), 0 0 26px 6px rgba(255,255,255,0.18);
-}
-.loader-toggle.is-on .loader-toggle-thumb { transform: translateX(20px); background: #ffffff; }
-.loader-toggle-text {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-    color: rgba(255,255,255,0.75); white-space: nowrap;
-}
-.loader-toggle.is-on .loader-toggle-text { color: #ffffff; }
-
-.loader-lang-btn {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: var(--card-bg); border: 1px solid var(--border-color); color: #fff;
+.loader-icon-btn {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: #ffffff; color: #000000; border: 2px solid #000000;
     font-size: 0.75rem; font-weight: 800; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.3s, color 0.3s;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    transition: background 0.3s, color 0.3s, transform 0.2s, border-color 0.3s;
 }
-.loader-lang-btn:hover { background: #fff; color: #000; }
+.loader-icon-btn.is-on { background: #000000; color: #ffffff; border-color: #ffffff; }
+.loader-icon-btn:hover { transform: scale(1.08); }
+.loader-icon-text { font-size: 0.62rem; font-weight: 800; }
+
+.loader-toggle { display: none; }
+.loader-lang-btn { display: none; }
 
 .hud-header {
     position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px;
