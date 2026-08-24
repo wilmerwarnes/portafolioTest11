@@ -473,6 +473,11 @@ const interval = setInterval(() => {
             if (startBtn) { startBtn.style.display = 'block'; startBtn.style.opacity = '1'; }
             if (loaderOptions) loaderOptions.style.display = 'flex';
         }, 900);
+        // Después de cubrir, las olas desaparecen y queda negro sólido
+        setTimeout(() => {
+            if (waveWrap) waveWrap.classList.add('solid');
+            if (waveFill) waveFill.classList.add('solid');
+        }, 1600);
     }
     const pct = Math.floor(progress);
     if (bar) bar.style.width = pct + '%';
