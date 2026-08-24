@@ -19,21 +19,21 @@
 </head>
 <body>
 
-    <!-- Pantalla de Carga: olas multicapa como el video, pintando de negro -->
+    <!-- Pantalla de Carga: olas multicapa con forma visible -->
     <div id="loader">
         <div class="wave-fill" id="wave-fill">
-            <svg class="wave-top" viewBox="0 0 1440 160" preserveAspectRatio="none">
-                <!-- Capa trasera - gris claro -->
-                <path d="M0,35 C180,85 380,15 720,35 C900,70 1100,10 1440,35 L1440,160 L0,160 Z" fill="#2a2a2a">
-                    <animate attributeName="d" dur="3.4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,35 C180,85 380,15 720,35 C900,70 1100,10 1440,35 L1440,160 L0,160 Z;M0,35 C180,15 380,85 720,35 C900,10 1100,70 1440,35 L1440,160 L0,160 Z;M0,35 C180,85 380,15 720,35 C900,70 1100,10 1440,35 L1440,160 L0,160 Z" />
+            <svg class="wave-top" viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <!-- Capa trasera - gris medio claro, ola suave -->
+                <path d="M0,60 C200,100 400,20 720,60 C950,95 1120,25 1440,60 L1440,120 L0,120 Z" fill="#4a4a4a">
+                    <animate attributeName="d" dur="3.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,60 C200,100 400,20 720,60 C950,95 1120,25 1440,60 L1440,120 L0,120 Z;M0,60 C200,20 400,100 720,60 C950,25 1120,95 1440,60 L1440,120 L0,120 Z;M0,60 C200,100 400,20 720,60 C950,95 1120,25 1440,60 L1440,120 L0,120 Z" />
                 </path>
-                <!-- Capa media - gris medio -->
-                <path d="M0,55 C180,115 380,25 720,55 C900,95 1100,25 1440,55 L1440,160 L0,160 Z" fill="#111111">
-                    <animate attributeName="d" dur="2.7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,55 C180,115 380,25 720,55 C900,95 1100,25 1440,55 L1440,160 L0,160 Z;M0,55 C180,25 380,115 720,55 C900,25 1100,95 1440,55 L1440,160 L0,160 Z;M0,55 C180,115 380,25 720,55 C900,95 1100,25 1440,55 L1440,160 L0,160 Z" />
+                <!-- Capa media - gris oscuro -->
+                <path d="M0,60 C180,120 380,10 720,60 C900,110 1100,20 1440,60 L1440,120 L0,120 Z" fill="#1a1a1a">
+                    <animate attributeName="d" dur="2.8s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,60 C180,120 380,10 720,60 C900,110 1100,20 1440,60 L1440,120 L0,120 Z;M0,60 C180,10 380,120 720,60 C900,20 1100,110 1440,60 L1440,120 L0,120 Z;M0,60 C180,120 380,10 720,60 C900,110 1100,20 1440,60 L1440,120 L0,120 Z" />
                 </path>
-                <!-- Capa frontal - negro puro, picos que suben/bajan y se agrandan -->
-                <path d="M0,75 C180,135 380,20 720,75 C900,115 1100,30 1440,75 L1440,160 L0,160 Z" fill="#000000">
-                    <animate attributeName="d" dur="2.1s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,75 C180,135 380,20 720,75 C900,115 1100,30 1440,75 L1440,160 L0,160 Z;M0,75 C180,20 380,135 720,75 C900,30 1100,115 1440,75 L1440,160 L0,160 Z;M0,75 C180,135 380,20 720,75 C900,115 1100,30 1440,75 L1440,160 L0,160 Z" />
+                <!-- Capa frontal - negro puro, picos marcados -->
+                <path d="M0,60 C150,130 350,5 720,60 C850,120 1050,10 1440,60 L1440,120 L0,120 Z" fill="#000000">
+                    <animate attributeName="d" dur="2.1s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,60 C150,130 350,5 720,60 C850,120 1050,10 1440,60 L1440,120 L0,120 Z;M0,60 C150,5 350,130 720,60 C850,10 1050,120 1440,60 L1440,120 L0,120 Z;M0,60 C150,130 350,5 720,60 C850,120 1050,10 1440,60 L1440,120 L0,120 Z" />
                 </path>
             </svg>
         </div>
