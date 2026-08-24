@@ -41,9 +41,9 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .back { fill: #5a5a5a; opacity: 0.45; animation: move-back 3s linear infinite; }
 .mid { fill: #2e2e2e; opacity: 0.75; animation: move-mid 2s linear infinite reverse; }
 .front { fill: #000; animation: move-front 1.2s linear infinite; }
-@keyframes move-back { 0% { transform: translate(0, 0); } 50% { transform: translate(-25%, -50px); } 100% { transform: translate(-50%, 0); } }
-@keyframes move-mid { 0% { transform: translate(0, 0); } 50% { transform: translate(-25%, -60px); } 100% { transform: translate(-50%, 0); } }
-@keyframes move-front { 0% { transform: translate(0, 0); } 50% { transform: translate(-25%, -70px); } 100% { transform: translate(-50%, 0); } }
+@keyframes move-back { 0% { transform: translate(0, 0) scaleY(1); } 50% { transform: translate(-25%, -50px) scaleY(1.1); } 100% { transform: translate(-50%, 0) scaleY(1); } }
+@keyframes move-mid { 0% { transform: translate(0, 0) scaleY(1); } 50% { transform: translate(-25%, -60px) scaleY(1.15); } 100% { transform: translate(-50%, 0) scaleY(1); } }
+@keyframes move-front { 0% { transform: translate(0, 0) scaleY(1); } 50% { transform: translate(-25%, -70px) scaleY(1.2); } 100% { transform: translate(-50%, 0) scaleY(1); } }
 .wave-wrap.solid { background: #000; }
 .wave-wrap.solid .wave { opacity: 0; transition: opacity 0.6s ease; }
 .wave-fill.solid { background: #000; }
