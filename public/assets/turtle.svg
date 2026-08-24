@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white">
+  <!-- Shell -->
+  <path d="M50 22 L62 30 L62 52 L50 62 L38 52 L38 30 Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M38 30 L50 38 L62 30 M50 38 L50 62 M38 52 L62 52 M38 30 L38 52 M62 30 L62 52" stroke="white" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+  <!-- Head -->
+  <ellipse cx="50" cy="14" rx="8" ry="6"/>
+  <!-- Flippers -->
+  <ellipse cx="24" cy="32" rx="9" ry="5" transform="rotate(-35 24 32)"/>
+  <ellipse cx="76" cy="32" rx="9" ry="5" transform="rotate(35 76 32)"/>
+  <ellipse cx="24" cy="62" rx="9" ry="5" transform="rotate(35 24 62)"/>
+  <ellipse cx="76" cy="62" rx="9" ry="5" transform="rotate(-35 76 62)"/>
+  <!-- Tail -->
+  <path d="M50 62 Q50 75 50 82 Q48 75 50 82 Q52 75 50 62" />
+</svg>
