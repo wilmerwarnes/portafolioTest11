@@ -32,34 +32,24 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .fill-wrap { position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: #000; transition: height 0.5s cubic-bezier(.4,0,.2,1); pointer-events: none; }
 .fill-wrap.filled { height: 110%; }
 
-.percent.on-black,
-.loading-text.on-black { color: #fff; transition: color 0.4s ease; }
-.percent { transition: opacity 0.4s ease; color: rgba(0,0,0,0.6); }
-.loading-text { transition: opacity 0.4s ease, display 0.4s ease; color: rgba(0,0,0,0.5); }
+.percent.on-black { color: #fff; transition: color 0.4s ease; }
+.percent { transition: opacity 0.4s ease, color 0.4s ease; color: rgba(0,0,0,0.6); }
 
 #start-btn {
     position: relative;
-    background: #fff; color: #000; border: 1px solid transparent; padding: 14px 44px;
+    background: transparent; color: #fff; border: 2px solid #fff; padding: 14px 44px;
     font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem;
     cursor: pointer; border-radius: 30px;
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease, background 0.4s ease, color 0.35s ease, border-color 0.4s ease;
-    animation: startBtnBreathe 2.4s ease-in-out infinite;
-}
-@keyframes startBtnBreathe {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.4); }
-    50% { box-shadow: 0 0 26px 6px rgba(255,255,255,0.32), 0 8px 24px rgba(0,0,0,0.4); }
+    transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
 }
 #start-btn:hover {
-    transform: scale(1.08) translateY(-3px);
-    color: #fff;
-    background: rgba(255,255,255,0.14);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-color: rgba(255,255,255,0.55);
-    box-shadow: 0 0 34px 8px rgba(255,255,255,0.28), 0 0 60px 16px rgba(255,255,255,0.14), 0 12px 30px rgba(0,0,0,0.5);
-    animation: none;
+    background: #fff; color: #000; border-color: #fff;
+    transform: scale(1.05);
 }
-#start-btn:active { transform: scale(1.02) translateY(-1px); }
+#start-btn:active { transform: scale(0.98); }
+/* Cuando está sobre fondo negro */
+.loader-options.on-black #start-btn { background: transparent; color: #fff; border-color: #fff; }
+.loader-options.on-black #start-btn:hover { background: #fff; color: #000; border-color: #fff; }
 
 /* Animaciones de entrada para botones */
 @keyframes btnFadeInUp {
@@ -132,11 +122,8 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .loader-options.on-black .loader-icon-btn:hover { background: #fff; color: #000; border-color: #fff; }
 .loader-options.on-black .loader-icon-btn.is-on { background: #fff; color: #000; border-color: #fff; }
 .loader-options.on-black .loader-icon-btn:not(.is-on) .fa-music { color: #fff; }
-.loader-options.on-black #start-btn { background: transparent; color: #fff; border: 2px solid #fff; }
-.loader-options.on-black #start-btn:hover { background: #fff; color: #000; border-color: #fff; }
-/* Start button on white background (initial state) */
-#start-btn { background: transparent; color: #000; border: 2px solid #000; }
-#start-btn:hover { background: #000; color: #fff; border-color: #000; }
+.loader-options.on-black #start-btn { background: #fff; color: #000; border-color: #fff; }
+.loader-options.on-black #start-btn:hover { background: transparent; color: #fff; border-color: #fff; }
 
 .hud-header {
     position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px;

@@ -457,14 +457,12 @@ const loaderOptions = document.querySelector('.loader-options') as HTMLDivElemen
 const interval = setInterval(() => {
     progress += Math.random() * 25;
     const pct = Math.min(progress, 100);
-    // Actualizar altura del relleno según el progreso
     if (fillWrap) fillWrap.style.height = pct + '%';
     if (percentEl) percentEl.textContent = 'CARGANDO ' + Math.floor(pct) + '%';
 
     if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        // Llenar completamente
         if (fillWrap) { fillWrap.style.height = '100%'; fillWrap.classList.add('filled'); }
         if (percentEl) percentEl.classList.add('on-black');
         setTimeout(() => {
