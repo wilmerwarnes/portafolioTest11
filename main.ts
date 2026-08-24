@@ -446,7 +446,7 @@ function playSFX(presetName) {
     if (p.noise) playNoiseBurst(p.dur * 0.6, p.noiseFreq, sfxVolume * 0.18);
 }
 
-// --- LOADER — olas suben, cubren pantalla, se vuelven negro sólido ---
+// --- LOADER — una onda que sube como agua en vaso ---
 let progress = 0;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
@@ -457,35 +457,33 @@ const loaderOptions = document.querySelector('.loader-options') as HTMLDivElemen
 
 const interval = setInterval(() => {
     progress += Math.random() * 25;
+    const pct = Math.min(progress, 100);
+    // Actualizar altura de la onda según el progreso
+    if (waveWrap) waveWrap.style.height = pct + '%';
+    if (percentEl) percentEl.textContent = 'CARGANDO ' + Math.floor(pct) + '%';
+    if (loadingTextWave) loadingTextWave.textContent = 'loading...';
+
     if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        if (waveWrap) waveWrap.classList.add('filled');
+        // Llenar completamente y volver negro sólido
+        if (waveWrap) { waveWrap.style.height = '100%'; waveWrap.classList.add('filled'); }
         if (percentEl) percentEl.classList.add('on-black');
         if (loadingTextWave) loadingTextWave.classList.add('on-black');
-        // Esperar a que termine la animación de subida (2.2s) y volver olas negro sólido
         setTimeout(() => {
             if (waveWrap) waveWrap.classList.add('solid');
-            // Ocultar texto y mostrar botones
             if (percentEl) (percentEl as HTMLElement).style.opacity = '0';
             if (loadingTextWave) loadingTextWave.style.display = 'none';
             if (startBtn) { startBtn.style.display = 'block'; startBtn.style.opacity = '1'; }
             if (loaderOptions) loaderOptions.style.display = 'flex';
-        }, 2200);
+        }, 600);
     }
-    const pct = Math.floor(progress);
-    if (percentEl) percentEl.textContent = 'CARGANDO ' + pct + '%';
-    if (loadingTextWave) loadingTextWave.textContent = 'loading...';
 }, 200);
 
 let wantsMusicOnStart = true;
 const musicChoiceBtn = document.getElementById('music-choice-btn') as HTMLButtonElement | null;
-const musicChoiceLabel = document.getElementById('music-choice-label') as HTMLSpanElement | null;
 
 function updateMusicChoiceLabel() {
-    const t = translations[currentLang];
-    if (musicChoiceLabel)
-        musicChoiceLabel.innerText = wantsMusicOnStart ? t.music_choice_on : t.music_choice_off;
     if (musicChoiceBtn) {
         musicChoiceBtn.classList.toggle('is-on', wantsMusicOnStart);
         musicChoiceBtn.setAttribute('aria-checked', wantsMusicOnStart ? 'true' : 'false');
