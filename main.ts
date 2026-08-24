@@ -446,7 +446,7 @@ function playSFX(presetName) {
     if (p.noise) playNoiseBurst(p.dur * 0.6, p.noiseFreq, sfxVolume * 0.18);
 }
 
-// --- LOADER — olas del ejemplo (blanco → negro) ---
+// --- LOADER — olas suben, cubren pantalla, se vuelven negro sólido ---
 let progress = 0;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
@@ -463,12 +463,15 @@ const interval = setInterval(() => {
         if (waveWrap) waveWrap.classList.add('filled');
         if (percentEl) percentEl.classList.add('on-black');
         if (loadingTextWave) loadingTextWave.classList.add('on-black');
+        // Esperar a que termine la animación de subida (2.2s) y volver olas negro sólido
         setTimeout(() => {
+            if (waveWrap) waveWrap.classList.add('solid');
+            // Ocultar texto y mostrar botones
             if (percentEl) (percentEl as HTMLElement).style.opacity = '0';
             if (loadingTextWave) loadingTextWave.style.display = 'none';
             if (startBtn) { startBtn.style.display = 'block'; startBtn.style.opacity = '1'; }
             if (loaderOptions) loaderOptions.style.display = 'flex';
-        }, 900);
+        }, 2200);
     }
     const pct = Math.floor(progress);
     if (percentEl) percentEl.textContent = 'CARGANDO ' + pct + '%';
