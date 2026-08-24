@@ -100,6 +100,8 @@ const translations: Translations = {
         scroll_hint_start: 'Desliza la pantalla para ir a la siguiente sección',
         scroll_hint_mid: 'Desliza la pantalla para avanzar o retroceder',
         scroll_hint_end: 'Desliza la pantalla hacia atrás para volver',
+        scroll_hint_desktop_start: 'Haz scroll hacia arriba para avanzar',
+        scroll_hint_desktop_end: 'Haz scroll hacia abajo para retroceder',
     },
     en: {
         title: 'Wilmer Warnes | 3D Experiential Portfolio',
@@ -147,7 +149,9 @@ const translations: Translations = {
         scroll_hint_start: 'Swipe the screen to go to the next section',
         scroll_hint_mid: 'Swipe the screen to move forward or back',
         scroll_hint_end: 'Swipe the screen backward to go back',
-    },
+        scroll_hint_desktop_start: 'Scroll up to advance',
+        scroll_hint_desktop_end: 'Scroll down to go back'
+    }
 };
 
 const langToggleBtn = document.getElementById('lang-toggle-btn') as HTMLButtonElement | null;
@@ -236,6 +240,37 @@ audioMenuToggle?.addEventListener('click', (e) => {
 });
 window.addEventListener('click', () => audioDropdown?.classList.remove('active'));
 audioDropdown?.addEventListener('click', (e) => e.stopPropagation());
+
+// --- MOBILE: controles idioma + música en un solo desplegable ---
+const mobileControlsToggle = document.getElementById('mobile-controls-toggle') as HTMLButtonElement | null;
+const hudControlsGroup = document.getElementById('hud-controls-group') as HTMLDivElement | null;
+if (mobileControlsToggle && hudControlsGroup) {
+    mobileControlsToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = hudControlsGroup.classList.toggle('mobile-open');
+        const icon = mobileControlsToggle.querySelector('i');
+        if (icon) icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-ellipsis';
+        playSFX('click');
+    });
+    // Cerrar al tocar fuera
+    document.addEventListener('click', (e) => {
+        if (!isMobileViewport()) return;
+        const target = e.target as HTMLElement;
+        if (!hudControlsGroup.contains(target) && !mobileControlsToggle.contains(target)) {
+            hudControlsGroup.classList.remove('mobile-open');
+            const icon = mobileControlsToggle.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-ellipsis';
+        }
+    });
+    // Cerrar al cambiar a desktop
+    window.addEventListener('resize', () => {
+        if (!isMobileViewport()) {
+            hudControlsGroup.classList.remove('mobile-open');
+            const icon = mobileControlsToggle.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-ellipsis';
+        }
+    });
+}
 
 function updateTrackDisplay() {
     if (trackNameDisplay) trackNameDisplay.innerText = tracks[currentTrackIndex].name;
@@ -1499,9 +1534,12 @@ const GALLERY_TITLE_KEYS: Record<string, string> = {
 };
 
 async function loadPortfolioData(): Promise<void> {
-    const res = await fetch('portfolioData.json');
+    const base = (import.meta as any).env?.BASE_URL || '/';
+    const url = `${base}portfolioData.json`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
     portfolioData = (await res.json()) as PortfolioData;
-    initProjectCards();
+    if (portfolioData) initProjectCards();
 }
 
 function galleryTitleForCategory(category: string): string {
