@@ -30,10 +30,10 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #000; transition: width 0.3s ease; }
 
 .wave-wrap { position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; transition: height 0.5s cubic-bezier(.4,0,.2,1); pointer-events: none; overflow: hidden; }
-.wave-wrap.filled { height: 100%; }
+.wave-wrap.filled { height: 110%; }
 .wave { position: absolute; bottom: 0; left: -10%; width: 120%; height: 100%; fill: #000; transform-origin: center bottom; animation: waveTilt 3s ease-in-out infinite; }
 @keyframes waveTilt { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
-/* Negro sólido perfecto: sin olas, sin inclinación, rectángulo completo */
+/* Negro sólido perfecto: sin olas, sin inclinación, rectángulo completo que cubre todo */
 .wave-wrap.solid { overflow: visible; }
 .wave-wrap.solid .wave { animation: none; transform: none; }
 
@@ -132,8 +132,13 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .loader-icon-btn:hover { background: #000; color: #fff; border-color: #000; }
 .loader-icon-btn.is-on { background: #000; color: #fff; border-color: #000; }
 .loader-icon-btn:not(.is-on) .fa-music { color: #000; }
-#start-btn { background: #000; color: #fff; border: 1px solid transparent; }
-#start-btn:hover { background: #fff; color: #000; border-color: #000; box-shadow: 0 0 34px 8px rgba(0,0,0,0.28), 0 0 60px 16px rgba(0,0,0,0.14), 0 12px 30px rgba(0,0,0,0.5); }
+/* Botones sobre fondo negro */
+.loader-options.on-black .loader-icon-btn { border-color: #fff; color: #fff; background: transparent; }
+.loader-options.on-black .loader-icon-btn:hover { background: #fff; color: #000; border-color: #fff; }
+.loader-options.on-black .loader-icon-btn.is-on { background: #fff; color: #000; border-color: #fff; }
+.loader-options.on-black .loader-icon-btn:not(.is-on) .fa-music { color: #fff; }
+.loader-options.on-black #start-btn { background: #fff; color: #000; border-color: #fff; }
+.loader-options.on-black #start-btn:hover { background: transparent; color: #fff; border-color: #fff; }
 
 .hud-header {
     position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px;

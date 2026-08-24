@@ -474,6 +474,7 @@ const interval = setInterval(() => {
             if (waveWrap) waveWrap.classList.add('solid');
             if (percentEl) (percentEl as HTMLElement).style.opacity = '0';
             if (loadingTextWave) loadingTextWave.style.display = 'none';
+            if (loaderOptions) loaderOptions.classList.add('on-black');
             if (startBtn) { startBtn.style.display = 'block'; requestAnimationFrame(() => startBtn.classList.add('visible')); }
             if (loaderOptions) { loaderOptions.style.display = 'flex'; requestAnimationFrame(() => loaderOptions.classList.add('visible')); }
         }, 600);
