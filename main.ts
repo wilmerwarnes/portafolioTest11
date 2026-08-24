@@ -59,7 +59,7 @@ let currentLang: 'es' | 'en' = 'es';
 const translations: Translations = {
     es: {
         title: 'Wilmer Warnes | Portafolio 3D Experiential',
-        start_btn: 'Explorar Experiencia 3D',
+        start_btn: 'Ver portafolio de Wilmer Warnes',
         nav_home: 'Inicio',
         nav_about: 'Sobre Mí',
         nav_projects: 'Proyectos',
@@ -451,7 +451,6 @@ let progress = 0;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
 const fillWrap = document.getElementById('fillWrap') as HTMLDivElement | null;
-const loadingTextWave = document.getElementById('loading-text-wave') as HTMLDivElement | null;
 const percentEl = document.getElementById('percent') as HTMLDivElement | null;
 const loaderOptions = document.querySelector('.loader-options') as HTMLDivElement | null;
 
@@ -461,7 +460,6 @@ const interval = setInterval(() => {
     // Actualizar altura del relleno según el progreso
     if (fillWrap) fillWrap.style.height = pct + '%';
     if (percentEl) percentEl.textContent = 'CARGANDO ' + Math.floor(pct) + '%';
-    if (loadingTextWave) loadingTextWave.textContent = 'loading...';
 
     if (progress >= 100) {
         progress = 100;
@@ -469,10 +467,8 @@ const interval = setInterval(() => {
         // Llenar completamente
         if (fillWrap) { fillWrap.style.height = '100%'; fillWrap.classList.add('filled'); }
         if (percentEl) percentEl.classList.add('on-black');
-        if (loadingTextWave) loadingTextWave.classList.add('on-black');
         setTimeout(() => {
             if (percentEl) (percentEl as HTMLElement).style.opacity = '0';
-            if (loadingTextWave) loadingTextWave.style.display = 'none';
             if (loaderOptions) loaderOptions.classList.add('on-black');
             if (startBtn) { startBtn.style.display = 'block'; requestAnimationFrame(() => startBtn.classList.add('visible')); }
             if (loaderOptions) { loaderOptions.style.display = 'flex'; requestAnimationFrame(() => loaderOptions.classList.add('visible')); }

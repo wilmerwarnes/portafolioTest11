@@ -132,8 +132,11 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .loader-options.on-black .loader-icon-btn:hover { background: #fff; color: #000; border-color: #fff; }
 .loader-options.on-black .loader-icon-btn.is-on { background: #fff; color: #000; border-color: #fff; }
 .loader-options.on-black .loader-icon-btn:not(.is-on) .fa-music { color: #fff; }
-.loader-options.on-black #start-btn { background: #fff; color: #000; border-color: #fff; }
-.loader-options.on-black #start-btn:hover { background: transparent; color: #fff; border-color: #fff; }
+.loader-options.on-black #start-btn { background: transparent; color: #fff; border: 2px solid #fff; }
+.loader-options.on-black #start-btn:hover { background: #fff; color: #000; border-color: #fff; }
+/* Start button on white background (initial state) */
+#start-btn { background: transparent; color: #000; border: 2px solid #000; }
+#start-btn:hover { background: #000; color: #fff; border-color: #000; }
 
 .hud-header {
     position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px;
