@@ -492,7 +492,7 @@ function updateMusicChoiceLabel() {
 musicChoiceBtn?.addEventListener('click', () => {
     wantsMusicOnStart = !wantsMusicOnStart;
     updateMusicChoiceLabel();
-    playSFX('tick');
+    // No playSFX here - audio context not initialized yet on loader
 });
 updateMusicChoiceLabel();
 
