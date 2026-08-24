@@ -446,11 +446,11 @@ function playSFX(presetName) {
     if (p.noise) playNoiseBurst(p.dur * 0.6, p.noiseFreq, sfxVolume * 0.18);
 }
 
-// --- LOADER — una onda que sube como agua en vaso ---
+// --- LOADER — relleno simple que sube ---
 let progress = 0;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
-const waveWrap = document.getElementById('waveWrap') as HTMLDivElement | null;
+const fillWrap = document.getElementById('fillWrap') as HTMLDivElement | null;
 const loadingTextWave = document.getElementById('loading-text-wave') as HTMLDivElement | null;
 const percentEl = document.getElementById('percent') as HTMLDivElement | null;
 const loaderOptions = document.querySelector('.loader-options') as HTMLDivElement | null;
@@ -458,26 +458,25 @@ const loaderOptions = document.querySelector('.loader-options') as HTMLDivElemen
 const interval = setInterval(() => {
     progress += Math.random() * 25;
     const pct = Math.min(progress, 100);
-    // Actualizar altura de la onda según el progreso
-    if (waveWrap) waveWrap.style.height = pct + '%';
+    // Actualizar altura del relleno según el progreso
+    if (fillWrap) fillWrap.style.height = pct + '%';
     if (percentEl) percentEl.textContent = 'CARGANDO ' + Math.floor(pct) + '%';
     if (loadingTextWave) loadingTextWave.textContent = 'loading...';
 
     if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        // Llenar completamente y volver negro sólido
-        if (waveWrap) { waveWrap.style.height = '100%'; waveWrap.classList.add('filled'); }
+        // Llenar completamente
+        if (fillWrap) { fillWrap.style.height = '100%'; fillWrap.classList.add('filled'); }
         if (percentEl) percentEl.classList.add('on-black');
         if (loadingTextWave) loadingTextWave.classList.add('on-black');
         setTimeout(() => {
-            if (waveWrap) waveWrap.classList.add('solid');
             if (percentEl) (percentEl as HTMLElement).style.opacity = '0';
             if (loadingTextWave) loadingTextWave.style.display = 'none';
             if (loaderOptions) loaderOptions.classList.add('on-black');
             if (startBtn) { startBtn.style.display = 'block'; requestAnimationFrame(() => startBtn.classList.add('visible')); }
             if (loaderOptions) { loaderOptions.style.display = 'flex'; requestAnimationFrame(() => loaderOptions.classList.add('visible')); }
-        }, 600);
+        }, 500);
     }
 }, 200);
 
