@@ -2557,7 +2557,8 @@ function animate() {
         logoGroup.position.y = heroLogoBaseY + Math.sin(time * 0.5) * 0.08;
 
         CARD_CATEGORIES.forEach((catSpec, i) => {
-            const bobY = 1 + Math.sin(time * 0.6 + i * 2) * 0.12;
+            const baseY = mobileMode ? 0.55 : 1;
+            const bobY = baseY + Math.sin(time * 0.6 + i * 2) * 0.12;
             const obj = (window as any).cssCardGroups?.[catSpec.key];
             if (obj) {
                 obj.position.y = bobY;
