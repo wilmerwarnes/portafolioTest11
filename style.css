@@ -31,7 +31,7 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .loader-bar-container { display: none; }
 .loader-bar { display: none; }
 
-/* Olas originales - mantenemos structure pero hidden hasta después */
+/* Olas - structure mantenida pero simplificada */
 .wave-wrap { position: absolute; bottom: 0; left: 0; width: 100%; height: 15%; }
 .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
 .back { fill: #5a5a5a; opacity: 0.45; animation: move-back 3s linear infinite; }
@@ -41,74 +41,26 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 @keyframes move-mid { 0% { transform: translate(0, 0); } 50% { transform: translate(-25%, -20px); } 100% { transform: translate(-50%, 0); } }
 @keyframes move-front { 0% { transform: translate(0, 0); } 50% { transform: translate(-25%, -26px); } 100% { transform: translate(-50%, 0); } }
 
-/* Circle loader - el círculo que se expande desde el centro */
-.circle-loader {
-    position: relative;
-    width: 200px;
-    height: 200px;
-}
-.circle-loader svg {
-    width: 100%;
-    height: 100%;
-}
-.circle-path {
-    fill: none;
-    stroke: #000;
-    stroke-width: 12;
-    stroke-linecap: round;
-    transform: rotate(-90deg);
-    transform-origin: 100px 100px;
-}
-.circle-foreground {
-    fill: #000;
-    opacity: 0.3;
-}
-
-/* Estructura del círculo - unas olas que forman un círculo */
-.wave-circle {
-    fill: #000;
-    opacity: 0.4;
-    transform: rotate(-90deg) translateX(100px) translateY(0);
-    transform-origin: 100px 100px;
-    animation: circle-build 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes circle-build {
-    0% { stroke-dashoffset: 628; opacity: 0.4; }
-    100% { stroke-dashoffset: 0; opacity: 1; }
-}
-
-/* Background circle overlay - se expande desde el centro */
-.background-expand {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 0;
-    height: 0;
-    border: 12px solid #000;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: expand-circle 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    pointer-events: none;
-}
-
-@keyframes expand-circle {
-    0% { width: 0; height: 0; opacity: 0.8; }
-    100% { width: 200vw; height: 200vw; opacity: 0; }
-}
+/* Text percent */
+.percent { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); color: #111; font-family: sans-serif; font-size: 14px; letter-spacing: 2px; opacity: 0.8; z-index: 10; transition: opacity 0.6s ease, color 0.6s ease; }
+.percent.on-black { color: #fff; }
 
 /* Loader content - texto y botón */
-.loader-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; opacity: 0; transition: opacity 0.5s 0.8s forwards; }
-.loader.black-background .loader-content { opacity: 1; }
-.percent { position: absolute; top: 20%; color: #333; font-family: 'Poppins', sans-serif; font-size: 1.2rem; letter-spacing: 1px; }
+.loader-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+.loading-text { color: #ffffff; font-weight: 700; font-size: 1.15rem; letter-spacing: 1px; text-transform: lowercase; mix-blend-mode: difference; }
+
+/* Botón - aparece cuando loader es negro */
 #start-btn {
     position: relative;
-    background: #fff; color: #000; border: 1px solid #000; padding: 12px 32px;
-    font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;
-    cursor: pointer; border-radius: 25px; transition: background 0.3s, color 0.3s;
-    visibility: hidden; opacity: 0; transform: scale(0.8);
+    background: #fff; color: #000; border: 1px solid transparent; padding: 14px 44px;
+    font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem;
+    cursor: pointer; border-radius: 30px;
+    transition: background 0.3s, color 0.3s;
+    display: none;
 }
-.loader.black-background #start-btn { visibility: visible; opacity: 1; transform: scale(1); }
-#start-btn:hover { background: #000; color: #fff; }
+.loader.black-background #start-btn { display: block; }
+#start-btn:hover {
+    background: #000; color: #fff;
+}
 
 .loader-options { margin-top: 18px; display: flex; gap: 16px; }
