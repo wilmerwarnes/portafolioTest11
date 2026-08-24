@@ -23,7 +23,12 @@
     <div id="loader">
         <div class="wave-fill" id="wave-fill">
             <svg class="wave-top" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M0,60 C150,120 350,0 600,60 C800,90 1000,30 1200,60 L1200,120 L0,120 Z" fill="#000"></path>
+                <path d="M0,60 C150,120 350,0 600,60 C800,90 1000,30 1200,60 L1200,120 L0,120 Z" fill="#000">
+                    <animate attributeName="d" dur="2.8s" repeatCount="indefinite" values="M0,60 C150,120 350,0 600,60 C800,90 1000,30 1200,60 L1200,120 L0,120 Z;M0,60 C150,0 350,120 600,60 C800,30 1000,90 1200,60 L1200,120 L0,120 Z;M0,60 C150,120 350,0 600,60 C800,90 1000,30 1200,60 L1200,120 L0,120 Z" />
+                </path>
+                <path d="M0,40 C200,80 400,20 700,50 C900,70 1050,10 1200,40 L1200,120 L0,120 Z" fill="#000" opacity="0.85">
+                    <animate attributeName="d" dur="2.2s" repeatCount="indefinite" values="M0,40 C200,80 400,20 700,50 C900,70 1050,10 1200,40 L1200,120 L0,120 Z;M0,40 C200,20 400,80 700,50 C900,10 1050,70 1200,40 L1200,120 L0,120 Z;M0,40 C200,80 400,20 700,50 C900,70 1050,10 1200,40 L1200,120 L0,120 Z" />
+                </path>
             </svg>
         </div>
         <div class="loader-content">
