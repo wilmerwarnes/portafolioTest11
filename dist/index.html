@@ -15,22 +15,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script type="module" crossorigin src="/portafolioTest11/assets/index-QIm_2zFx.js"></script>
-  <link rel="stylesheet" crossorigin href="/portafolioTest11/assets/index-HtnmDWP4.css">
+  <script type="module" crossorigin src="/portafolioTest11/assets/index-CA_oX5Jn.js"></script>
+  <link rel="stylesheet" crossorigin href="/portafolioTest11/assets/index-BHqN-B8B.css">
 </head>
 <body>
 
-    <!-- Pantalla de Carga: olas blancas → negro pintando desde abajo (como el video) -->
+    <!-- Pantalla de Carga: olas multicapa como el video, pintando de negro -->
     <div id="loader">
         <div class="wave-fill" id="wave-fill">
-            <svg class="wave-top" viewBox="0 0 1440 120" preserveAspectRatio="none">
-                <!-- Ola principal con drift lateral + morph -->
-                <path d="M0,60 C180,130 380,0 720,60 C900,100 1100,20 1440,60 L1440,120 L0,120 Z" fill="#000">
-                    <animate attributeName="d" dur="2.4s" repeatCount="indefinite" values="M0,60 C180,130 380,0 720,60 C900,100 1100,20 1440,60 L1440,120 L0,120 Z;M0,60 C180,0 380,130 720,60 C900,20 1100,100 1440,60 L1440,120 L0,120 Z;M0,60 C180,130 380,0 720,60 C900,100 1100,20 1440,60 L1440,120 L0,120 Z" />
+            <svg class="wave-top" viewBox="0 0 1440 160" preserveAspectRatio="none">
+                <!-- Capa trasera - gris claro -->
+                <path d="M0,35 C180,85 380,15 720,35 C900,70 1100,10 1440,35 L1440,160 L0,160 Z" fill="#2a2a2a">
+                    <animate attributeName="d" dur="3.4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,35 C180,85 380,15 720,35 C900,70 1100,10 1440,35 L1440,160 L0,160 Z;M0,35 C180,15 380,85 720,35 C900,10 1100,70 1440,35 L1440,160 L0,160 Z;M0,35 C180,85 380,15 720,35 C900,70 1100,10 1440,35 L1440,160 L0,160 Z" />
                 </path>
-                <!-- Segunda ola para profundidad, desfase -->
-                <path d="M0,45 C200,90 420,10 740,45 C960,75 1120,5 1440,45 L1440,120 L0,120 Z" fill="#000" opacity="0.9">
-                    <animate attributeName="d" dur="1.9s" repeatCount="indefinite" values="M0,45 C200,90 420,10 740,45 C960,75 1120,5 1440,45 L1440,120 L0,120 Z;M0,45 C200,10 420,90 740,45 C960,5 1120,75 1440,45 L1440,120 L0,120 Z;M0,45 C200,90 420,10 740,45 C960,75 1120,5 1440,45 L1440,120 L0,120 Z" />
+                <!-- Capa media - gris medio -->
+                <path d="M0,55 C180,115 380,25 720,55 C900,95 1100,25 1440,55 L1440,160 L0,160 Z" fill="#111111">
+                    <animate attributeName="d" dur="2.7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,55 C180,115 380,25 720,55 C900,95 1100,25 1440,55 L1440,160 L0,160 Z;M0,55 C180,25 380,115 720,55 C900,25 1100,95 1440,55 L1440,160 L0,160 Z;M0,55 C180,115 380,25 720,55 C900,95 1100,25 1440,55 L1440,160 L0,160 Z" />
+                </path>
+                <!-- Capa frontal - negro puro, picos que suben/bajan y se agrandan -->
+                <path d="M0,75 C180,135 380,20 720,75 C900,115 1100,30 1440,75 L1440,160 L0,160 Z" fill="#000000">
+                    <animate attributeName="d" dur="2.1s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1" values="M0,75 C180,135 380,20 720,75 C900,115 1100,30 1440,75 L1440,160 L0,160 Z;M0,75 C180,20 380,135 720,75 C900,30 1100,115 1440,75 L1440,160 L0,160 Z;M0,75 C180,135 380,20 720,75 C900,115 1100,30 1440,75 L1440,160 L0,160 Z" />
                 </path>
             </svg>
         </div>
