@@ -1643,10 +1643,10 @@ function buildCardElement(catSpec) {
         <div class="pc-inner">
             <img class="pc-img pc-active" src="${catData.projects[0].img}" alt="" draggable="false">
             <img class="pc-img" src="${catData.projects[1] ? catData.projects[1].img : catData.projects[0].img}" alt="" draggable="false">
-            <div class="pc-title">${t[catSpec.titleKey]}<span class="pc-sub">${t[catSpec.subKey]}</span></div>
         </div>
         <span class="pc-badge">${catSpec.badge}</span>
         <div class="pc-arrow"><i class="fa-solid fa-arrow-up-right"></i></div>
+        <div class="pc-title">${t[catSpec.titleKey]}<span class="pc-sub">${t[catSpec.subKey]}</span></div>
     `;
     el.style.cursor = 'pointer';
     el.addEventListener('click', (e) => {
