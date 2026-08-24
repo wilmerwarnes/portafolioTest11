@@ -446,14 +446,11 @@ function playSFX(presetName) {
     if (p.noise) playNoiseBurst(p.dur * 0.6, p.noiseFreq, sfxVolume * 0.18);
 }
 
-// --- LOADER — olas del ejemplo (blanco → negro) ---
+// --- LOADER — olas que suben y dejan fondo negro ---
 let progress = 0;
-const bar = document.getElementById('bar') as HTMLDivElement | null;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
-const waveFill = document.getElementById('wave-fill') as HTMLDivElement | null;
 const waveWrap = document.getElementById('waveWrap') as HTMLDivElement | null;
-const loadingTextWave = document.getElementById('loading-text-wave') as HTMLDivElement | null;
 const percentEl = document.getElementById('percent') as HTMLDivElement | null;
 const loaderOptions = document.querySelector('.loader-options') as HTMLDivElement | null;
 
@@ -462,28 +459,19 @@ const interval = setInterval(() => {
     if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        if (bar) bar.style.width = '100%';
-        if (waveFill) waveFill.style.height = '100%';
-        if (waveWrap) waveWrap.classList.add('filled');
-        if (percentEl) percentEl.classList.add('on-black');
-        if (loadingTextWave) loadingTextWave.classList.add('on-black');
+        if (loader) loader.classList.add('black-background');
+        if (waveWrap) waveWrap.classList.add('rising');
+        setTimeout(() => {
+            if (waveWrap) waveWrap.classList.add('filled');
+        }, 300);
         setTimeout(() => {
             if (percentEl) (percentEl as HTMLElement).style.opacity = '0';
-            if (loadingTextWave) loadingTextWave.style.display = 'none';
             if (startBtn) { startBtn.style.display = 'block'; startBtn.style.opacity = '1'; }
             if (loaderOptions) loaderOptions.style.display = 'flex';
-        }, 900);
-        // Después de cubrir, las olas desaparecen y queda negro sólido
-        setTimeout(() => {
-            if (waveWrap) waveWrap.classList.add('solid');
-            if (waveFill) waveFill.classList.add('solid');
-        }, 1600);
+        }, 1200);
     }
     const pct = Math.floor(progress);
-    if (bar) bar.style.width = pct + '%';
-    if (waveFill) waveFill.style.height = pct + '%';
     if (percentEl) percentEl.textContent = 'CARGANDO ' + pct + '%';
-    if (loadingTextWave) loadingTextWave.textContent = 'loading...';
 }, 200);
 
 let wantsMusicOnStart = true;

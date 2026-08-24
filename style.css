@@ -23,9 +23,10 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 #loader {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: #ffffff; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center;
-    transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    transition: background 0.8s cubic-bezier(0.77, 0, 0.175, 1);
     overflow: hidden;
 }
+#loader.black-background { background: #000000; }
 #loader h1 { display: none; }
 .loader-bar-container { display: none; }
 .loader-bar { display: none; }
@@ -36,19 +37,21 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
 .percent { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); color: #111; font-family: sans-serif; font-size: 14px; letter-spacing: 2px; opacity: 0.8; z-index: 10; transition: opacity 0.6s ease, color 0.6s ease; }
 .percent.on-black { color: #fff; }
 .wave-wrap { position: absolute; bottom: 0; left: 0; width: 100%; height: 15%; transition: height 1.6s cubic-bezier(.4,0,.2,1); }
+.wave-wrap.rising { height: 25%; }
 .wave-wrap.filled { height: 125%; }
 .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
-.back { fill: #5a5a5a; opacity: 0.45; animation: move-back 3s linear infinite; }
-.mid { fill: #2e2e2e; opacity: 0.75; animation: move-mid 2s linear infinite reverse; }
-.front { fill: #000; animation: move-front 1.2s linear infinite; }
-@keyframes move-back { 0% { transform: translate(0, 0) scaleY(1); } 50% { transform: translate(-25%, -50px) scaleY(1.1); } 100% { transform: translate(-50%, 0) scaleY(1); } }
-@keyframes move-mid { 0% { transform: translate(0, 0) scaleY(1); } 50% { transform: translate(-25%, -60px) scaleY(1.15); } 100% { transform: translate(-50%, 0) scaleY(1); } }
-@keyframes move-front { 0% { transform: translate(0, 0) scaleY(1); } 50% { transform: translate(-25%, -70px) scaleY(1.2); } 100% { transform: translate(-50%, 0) scaleY(1); } }
+.back { fill: #000; opacity: 0.4; animation: wave-rise-back 4s linear forwards; }
+.mid { fill: #000; opacity: 0.6; animation: wave-rise-mid 4s linear 0.2s forwards; }
+.front { fill: #000; opacity: 0.8; animation: wave-rise-front 4s linear 0.4s forwards; }
+@keyframes wave-rise-back { 0% { transform: translateX(0) translateY(0); } 100% { transform: translateX(-1000px) translateY(-100%); } }
+@keyframes wave-rise-mid { 0% { transform: translateX(0) translateY(0); } 100% { transform: translateX(-1000px) translateY(-100%); } }
+@keyframes wave-rise-front { 0% { transform: translateX(0) translateY(0); } 100% { transform: translateX(-1000px) translateY(-100%); } }
 .wave-wrap.solid { background: #000; }
 .wave-wrap.solid .wave { opacity: 0; transition: opacity 0.6s ease; }
 .wave-fill.solid { background: #000; }
 .wave-fill.solid .wave-top { opacity: 0; transition: opacity 0.6s ease; }
-.loader-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+.loader-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; opacity: 0; transition: opacity 0.5s 0.8s forwards; }
+.loader.black-background .loader-content { opacity: 1; }
 .loading-text { color: #ffffff; font-weight: 700; font-size: 1.15rem; letter-spacing: 1px; text-transform: lowercase; mix-blend-mode: difference; }
 
 #start-btn {
@@ -56,13 +59,11 @@ body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(
     background: #fff; color: #000; border: 1px solid transparent; padding: 14px 44px;
     font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem;
     cursor: pointer; border-radius: 30px;
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease, background 0.4s ease, color 0.35s ease, border-color 0.4s ease;
-    animation: startBtnBreathe 2.4s ease-in-out infinite;
+    transition: background 0.3s, color 0.3s, border 0.3s;
+    visibility: hidden; opacity: 0;
+    transform: scale(0.8);
 }
-@keyframes startBtnBreathe {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.4); }
-    50% { box-shadow: 0 0 26px 6px rgba(255,255,255,0.32), 0 8px 24px rgba(0,0,0,0.4); }
-}
+.loader.black-background #start-btn { visibility: visible; opacity: 1; transform: scale(1); }
 #start-btn:hover {
     transform: scale(1.08) translateY(-3px);
     color: #fff;
