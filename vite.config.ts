@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/portafolioTest11/',  // ← AGREGA ESTA LÍNEA
   root: '.',
   publicDir: 'public',
   build: {

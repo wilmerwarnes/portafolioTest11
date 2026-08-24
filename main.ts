@@ -44,10 +44,6 @@ let openLightbox: (cat: string, id: number) => void;
 let closeLightbox: () => void;
 let jumpToSection: (sectionIndex: number) => void;
 
-// Global state that must be declared early to avoid TDZ
-let currentSectionIndex = 0;
-let portfolioData: PortfolioData | null = null;
-
 // --- DETECCION DE MOVIL ---
 function isMobileViewport(): boolean {
     return window.innerWidth <= 900;
@@ -59,7 +55,7 @@ let currentLang: 'es' | 'en' = 'es';
 const translations: Translations = {
     es: {
         title: 'Wilmer Warnes | Portafolio 3D Experiential',
-        start_btn: 'Ver portafolio de Wilmer Warnes',
+        start_btn: 'Explorar Experiencia 3D',
         nav_home: 'Inicio',
         nav_about: 'Sobre Mí',
         nav_projects: 'Proyectos',
@@ -109,7 +105,7 @@ const translations: Translations = {
     },
     en: {
         title: 'Wilmer Warnes | 3D Experiential Portfolio',
-        start_btn: 'View Wilmer Warnes Portfolio',
+        start_btn: 'Explore 3D Experience',
         nav_home: 'Home',
         nav_about: 'About Me',
         nav_projects: 'Projects',
@@ -124,9 +120,9 @@ const translations: Translations = {
         audio_sfx: 'UI Effects (SFX)',
         glow_label: 'Card Glow',
         instructions: 'Use Mouse to look • Scroll or Top Menu to navigate • Click 3D objects',
+        modal_back: 'Back',
         scroll_hint_desktop_start: 'Scroll up to advance',
         scroll_hint_desktop_end: 'Scroll down to go back',
-        modal_back: 'Back',
         music_choice_on: '🔊 With music',
         music_choice_off: '🔇 Without music',
         loader_lang_label: 'Language',
@@ -244,36 +240,6 @@ audioMenuToggle?.addEventListener('click', (e) => {
 });
 window.addEventListener('click', () => audioDropdown?.classList.remove('active'));
 audioDropdown?.addEventListener('click', (e) => e.stopPropagation());
-
-// --- MOBILE: controles idioma + música en un solo desplegable ---
-const mobileControlsToggle = document.getElementById('mobile-controls-toggle') as HTMLButtonElement | null;
-const hudControlsGroup = document.getElementById('hud-controls-group') as HTMLDivElement | null;
-if (mobileControlsToggle && hudControlsGroup) {
-    mobileControlsToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = hudControlsGroup.classList.toggle('mobile-open');
-        const icon = mobileControlsToggle.querySelector('i');
-        if (icon) icon.className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-ellipsis';
-        playSFX('click');
-    });
-    // Cerrar al tocar fuera
-    document.addEventListener('click', (e) => {
-        if (!isMobileViewport()) return;
-        const target = e.target as HTMLElement;
-        if (!hudControlsGroup.contains(target) && !mobileControlsToggle.contains(target)) {
-            hudControlsGroup.classList.remove('mobile-open');
-            const icon = mobileControlsToggle.querySelector('i');
-            if (icon) icon.className = 'fa-solid fa-ellipsis';
-        }
-    });
-    window.addEventListener('resize', () => {
-        if (!isMobileViewport()) {
-            hudControlsGroup.classList.remove('mobile-open');
-            const icon = mobileControlsToggle.querySelector('i');
-            if (icon) icon.className = 'fa-solid fa-ellipsis';
-        }
-    });
-}
 
 function updateTrackDisplay() {
     if (trackNameDisplay) trackNameDisplay.innerText = tracks[currentTrackIndex].name;
@@ -446,45 +412,32 @@ function playSFX(presetName) {
     if (p.noise) playNoiseBurst(p.dur * 0.6, p.noiseFreq, sfxVolume * 0.18);
 }
 
-// --- LOADER — círculo que se expande desde el centro ---
+// --- LOADER ---
 let progress = 0;
+const bar = document.getElementById('bar') as HTMLDivElement | null;
 const loader = document.getElementById('loader') as HTMLDivElement | null;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement | null;
-const percentEl = document.getElementById('percent') as HTMLDivElement | null;
-const loaderOptions = document.querySelector('.loader-options') as HTMLDivElement | null;
 
 const interval = setInterval(() => {
-    progress += Math.random() * 25;
+    progress += 25;
     if (progress >= 100) {
-        progress = 100;
         clearInterval(interval);
-        // Primero: círculo waves se construye (4s) - ya está en CSS
-        // Segundo: background expand se ejecuta (5s) - ya está en CSS
-        // Tercero: después de 5s, loader diventa negro
-        setTimeout(() => {
-            if (loader) loader.classList.add('black-background');
-        }, 5500);
-        setTimeout(() => {
-            if (percentEl) (percentEl as HTMLElement).style.opacity = '0';
-            if (startBtn) { startBtn.style.display = 'block'; startBtn.style.opacity = '1'; }
-            if (loaderOptions) loaderOptions.style.display = 'flex';
-        }, 6000);
-    }
-    const pct = Math.floor(progress);
-    if (percentEl) percentEl.textContent = 'CARGANDO ' + pct + '%';
-}, 200);
+        if (bar) bar.style.width = '100%';
+        if (startBtn) startBtn.style.opacity = '1';
+    } else if (bar) bar.style.width = progress + '%';
+}, 100);
 
 let wantsMusicOnStart = true;
 const musicChoiceBtn = document.getElementById('music-choice-btn') as HTMLButtonElement | null;
 const musicChoiceLabel = document.getElementById('music-choice-label') as HTMLSpanElement | null;
 
 function updateMusicChoiceLabel() {
-    if (musicChoiceLabel) musicChoiceLabel.innerText = wantsMusicOnStart ? 'ON' : 'OFF';
+    const t = translations[currentLang];
+    if (musicChoiceLabel)
+        musicChoiceLabel.innerText = wantsMusicOnStart ? t.music_choice_on : t.music_choice_off;
     if (musicChoiceBtn) {
         musicChoiceBtn.classList.toggle('is-on', wantsMusicOnStart);
         musicChoiceBtn.setAttribute('aria-checked', wantsMusicOnStart ? 'true' : 'false');
-        const icon = musicChoiceBtn.querySelector('i');
-        if (icon) icon.className = wantsMusicOnStart ? 'fa-solid fa-music' : 'fa-solid fa-volume-xmark';
     }
 }
 musicChoiceBtn?.addEventListener('click', () => {
@@ -631,45 +584,21 @@ const scene = new THREE.Scene();
 // "Fondo (prueba)" en el menu de audio, BACKGROUND_PRESETS mas abajo).
 // ==========================================================================
 function createGalaxyBackgroundTexture(colors?: string[]) {
-    // Mantenemos textura CUADRADA en ambos (mobile 512, desktop 1024) para gradiente circular perfecto.
-    // Cambiar a rectangular en móvil estiraba el degradado y dejaba bordes claros a los lados.
-    const isMobile = isMobileViewport();
-    const size = isMobile ? 512 : 1024;
+    const c0 = (colors && colors[0]) || '#212d3b';
+    const c1 = (colors && colors[1]) || '#070c11';
+    const c2 = (colors && colors[2]) || '#000000';
+    const size = 1024;
     const c = document.createElement('canvas');
     c.width = size;
     c.height = size;
     const ctx = c.getContext('2d')!;
-    const center = size / 2;
-    const grad = ctx.createRadialGradient(center, center, 0, center, center, size / 2);
-    // COLORES SEPARADOS: edita SOLO MOBILE_* para probar sin tocar desktop
-    const MOBILE_C0 = '#050608'; const DESKTOP_C0 = '#212d3b';
-    const MOBILE_C1 = '#f11606'; const DESKTOP_C1 = '#152035';
-    const MOBILE_C2 = '#020305'; const DESKTOP_C2 = '#0e1520';
-    const MOBILE_C3 = '#eb190a'; const DESKTOP_C3 = '#080c15';
-    const MOBILE_C4 = '#010102'; const DESKTOP_C4 = '#04060a';
-    const c0 = (colors && colors[0]) || (isMobile ? MOBILE_C0 : DESKTOP_C0);
-    const c1 = (colors && colors[1]) || (isMobile ? MOBILE_C1 : DESKTOP_C1);
-    const c2 = (colors && colors[2]) || (isMobile ? MOBILE_C2 : DESKTOP_C2);
-    const c3 = (colors && colors[3]) || (isMobile ? MOBILE_C3 : DESKTOP_C3);
-    const c4 = (colors && colors[4]) || (isMobile ? MOBILE_C4 : DESKTOP_C4);
-    if (isMobile) {
-        // MÓVIL: solo 3 paradas → halo más definido y menos cálculo
-        grad.addColorStop(0.01, c0);
-        grad.addColorStop(0.40, c2);
-        grad.addColorStop(1.00, c4);
-    } else {
-        grad.addColorStop(0.00, c0);
-        grad.addColorStop(0.25, c1);
-        grad.addColorStop(0.50, c2);
-        grad.addColorStop(0.75, c3);
-        grad.addColorStop(1.00, c4);
-    }
+    const grad = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    grad.addColorStop(0, c0);
+    grad.addColorStop(0.45, c1);
+    grad.addColorStop(1, c2);
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, c.width, c.height);
-    const texture = new THREE.CanvasTexture(c);
-    texture.minFilter = THREE.LinearFilter;
-    texture.magFilter = THREE.LinearFilter;
-    return texture;
+    ctx.fillRect(0, 0, size, size);
+    return new THREE.CanvasTexture(c);
 }
 scene.background = createGalaxyBackgroundTexture();
 
@@ -677,7 +606,7 @@ const FOG_DENSITY = 0.02;
 scene.fog = new THREE.FogExp2(0x0d0c1c, FOG_DENSITY);
 
 const DESKTOP_FOV = 48;
-const MOBILE_FOV = 66;
+const MOBILE_FOV = 68;
 
 const camera = new THREE.PerspectiveCamera(
     isMobileViewport() ? MOBILE_FOV : DESKTOP_FOV,
@@ -1565,6 +1494,8 @@ let categoryCenterIndex = 0;
 // animate() se suma encima de esto, no lo reemplaza — ver mas abajo).
 const categoryCardBaseRotY: Record<string, number> = {};
 
+let portfolioData: PortfolioData | null = null;
+
 const GALLERY_TITLE_KEYS: Record<string, string> = {
     '3d': 'gallery_title_3d',
     diseno: 'gallery_title_diseno',
@@ -1572,34 +1503,9 @@ const GALLERY_TITLE_KEYS: Record<string, string> = {
 };
 
 async function loadPortfolioData(): Promise<void> {
-    const base = (import.meta as any).env?.BASE_URL || '/';
-    const urls = [`${base}portfolioData.json`, 'portfolioData.json', './portfolioData.json', '/portfolioData.json'];
-    let lastErr: any = null;
-    for (const url of urls) {
-        try {
-            console.log('[loadPortfolioData] fetching', url);
-            const res = await fetch(url);
-            if (!res.ok) { lastErr = new Error(`Failed ${url}: ${res.status}`); continue; }
-            const text = await res.text();
-            // Si devuelve HTML (fallback de SPA), no es JSON
-            if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
-                lastErr = new Error(`Got HTML not JSON from ${url}`);
-                continue;
-            }
-            portfolioData = JSON.parse(text) as PortfolioData;
-            console.log('[loadPortfolioData] OK from', url, 'keys:', portfolioData ? Object.keys(portfolioData) : null);
-            if (portfolioData && portfolioData['3d']) {
-                initProjectCards();
-                return;
-            }
-        } catch (e) { lastErr = e; console.warn('[loadPortfolioData] fail', url, e); }
-    }
-    console.error('[loadPortfolioData] all urls failed', lastErr);
-    // Fallback mínimo para que no quede null y las cards se creen
-    if (!portfolioData) {
-        portfolioData = { '3d': { title: '3D', projects: [] }, diseno: { title: 'Diseño', projects: [] }, edicion: { title: 'Edición', projects: [] } } as any;
-        initProjectCards();
-    }
+    const res = await fetch('portfolioData.json');
+    portfolioData = (await res.json()) as PortfolioData;
+    initProjectCards();
 }
 
 function galleryTitleForCategory(category: string): string {
@@ -1642,12 +1548,12 @@ const projectCardInstances = [];
 
 function buildCardElement(catSpec) {
     const t = translations[currentLang];
-    const catData = (portfolioData as any)?.[catSpec.key];
-    if (!catData || !catData.projects || catData.projects.length === 0) {
-        console.error('[buildCardElement] Category data not found for:', catSpec.key, 'Available:', portfolioData ? Object.keys(portfolioData as any) : 'null', 'catData:', catData);
+    const catData = portfolioData?.[catSpec.key];
+    if (!catData) {
+        console.error('[buildCardElement] Category data not found for:', catSpec.key, 'Available:', portfolioData ? Object.keys(portfolioData) : 'null');
         const el = document.createElement('div');
         el.className = 'proj-card';
-        el.innerHTML = '<div class="pc-inner">Cargando...</div>';
+        el.innerHTML = '<div class="pc-inner">Error: no data</div>';
         return el;
     }
     const el = document.createElement('div');
@@ -1656,10 +1562,10 @@ function buildCardElement(catSpec) {
         <div class="pc-inner">
             <img class="pc-img pc-active" src="${catData.projects[0].img}" alt="" draggable="false">
             <img class="pc-img" src="${catData.projects[1] ? catData.projects[1].img : catData.projects[0].img}" alt="" draggable="false">
+            <span class="pc-badge">${catSpec.badge}</span>
+            <div class="pc-arrow"><i class="fa-solid fa-arrow-up-right"></i></div>
+            <div class="pc-title">${t[catSpec.titleKey]}<span class="pc-sub">${t[catSpec.subKey]}</span></div>
         </div>
-        <span class="pc-badge">${catSpec.badge}</span>
-        <div class="pc-arrow"><i class="fa-solid fa-arrow-up-right"></i></div>
-        <div class="pc-title">${t[catSpec.titleKey]}<span class="pc-sub">${t[catSpec.subKey]}</span></div>
     `;
     el.style.cursor = 'pointer';
     el.addEventListener('click', (e) => {
@@ -1733,24 +1639,8 @@ CARD_CATEGORIES.forEach((catSpec) => {
 });
 scene.add(projectCardsHitGroup);
 
-const cssCardGroups: Record<string, CSS3DObject> = {};
-CARD_CATEGORIES.forEach((catSpec) => {
-    const cardEl = buildCardElement(catSpec);
-    const cssObj = new CSS3DObject(cardEl);
-    const scale = projectCardScale();
-    cssObj.scale.set(scale, scale, scale);
-    cssObj.position.set(catSpec.slot * PROJECTS_SPREAD_X_DESKTOP, 1, -42);
-    cssScene.add(cssObj);
-    cssCardGroups[catSpec.key] = cssObj;
-});
-Object.assign(window, { cssCardGroups });
-
 function initProjectCards(): void {
-    // Compat: si se llama de nuevo (lazy), recrea
-    Object.keys(cssCardGroups).forEach(k => {
-        try { cssScene.remove(cssCardGroups[k]); } catch {}
-        delete (cssCardGroups as any)[k];
-    });
+    const cssCardGroups: Record<string, CSS3DObject> = {};
     CARD_CATEGORIES.forEach((catSpec) => {
         const cardEl = buildCardElement(catSpec);
         const cssObj = new CSS3DObject(cardEl);
@@ -1760,6 +1650,7 @@ function initProjectCards(): void {
         cssScene.add(cssObj);
         cssCardGroups[catSpec.key] = cssObj;
     });
+    // Assign to global for later access
     Object.assign(window, { cssCardGroups });
 }
 
@@ -1829,10 +1720,6 @@ function applyResponsiveProjectCards() {
     });
 }
 applyResponsiveProjectCards();
-// Asegurar layout móvil en carga inicial (evita flash de layout desktop en móvil)
-requestAnimationFrame(() => {
-    applyResponsiveProjectCards();
-});
 
 function updateProjectCardsHover(clientX, clientY) {
     if (isMobileViewport()) return;
@@ -1886,6 +1773,7 @@ function getMinCameraZ() {
     return last.objectZ + sectionOffset(last);
 }
 
+let currentSectionIndex = 0;
 let scrollTargetZ = SECTIONS[0].objectZ + sectionOffset(SECTIONS[0]);
 
 const SCROLL_SENSITIVITY = 0.08;
@@ -2214,11 +2102,6 @@ function goToSection(index) {
     updateActiveNavHighlight();
     updateScrollHintVisibility();
     updateCategorySwitchVisibility();
-    // FIX móvil: si entramos a Proyectos, fuerza el mazo (corrige el flash desktop del inicio)
-    if (isMobileViewport() && index === 2) {
-        requestAnimationFrame(() => applyResponsiveProjectCards());
-        setTimeout(() => applyResponsiveProjectCards(), 100);
-    }
 }
 
 function snapToNearestSection() {
@@ -2248,7 +2131,7 @@ window.addEventListener('wheel', (e) => {
     scrollTargetZ = Math.max(getMinCameraZ(), Math.min(getMaxCameraZ(), scrollTargetZ));
 
     if (snapTimeout) clearTimeout(snapTimeout);
-    snapTimeout = setTimeout(snapToNearestSection, isMobileViewport() ? 120 : SNAP_DELAY_MS);
+    snapTimeout = setTimeout(snapToNearestSection, SNAP_DELAY_MS);
 });
 
 let touchStartY = null;
@@ -2278,7 +2161,7 @@ window.addEventListener(
         scrollTargetZ = Math.max(getMinCameraZ(), Math.min(getMaxCameraZ(), scrollTargetZ));
 
         if (snapTimeout) clearTimeout(snapTimeout);
-        snapTimeout = setTimeout(snapToNearestSection, isMobileViewport() ? 120 : SNAP_DELAY_MS);
+        snapTimeout = setTimeout(snapToNearestSection, SNAP_DELAY_MS);
     },
     { passive: true }
 );
@@ -2519,9 +2402,6 @@ window.addEventListener('resize', () => {
     updateCategorySwitchVisibility();
     if (isMobileViewport()) clearProjectCardsHover();
     updateScrollHintVisibility();
-    // Recrear fondo en resize para adaptar tamaño mobile/desktop
-    if (scene.background && (scene.background as any).dispose) (scene.background as THREE.Texture).dispose();
-    scene.background = createGalaxyBackgroundTexture();
 });
 
 // --- ANIMACIÓN ---
@@ -2534,10 +2414,9 @@ function animate() {
     if (starfield) starfield.rotation.y = time * 0.006;
 
     if (experienceStarted) {
-        const mobileMode = isMobileViewport();
-        const camLerp = mobileMode ? 0.09 : 0.05;
-        camera.position.z += (scrollTargetZ - camera.position.z) * camLerp;
+        camera.position.z += (scrollTargetZ - camera.position.z) * 0.05;
 
+        const mobileMode = isMobileViewport();
         const inGallery3D = galleryOpen;
         if (!hoveringContactCard) {
             const suppressParallax = inGallery3D && galleryArrowHovered;
@@ -2547,11 +2426,11 @@ function animate() {
                 const base = inGallery3D ? 2.2 : 1.2;
                 targetX = mouseX * base * (mobileMode ? 0.7 : 1);
             }
-            camera.position.x += (targetX - camera.position.x) * camLerp;
+            camera.position.x += (targetX - camera.position.x) * 0.05;
 
             const yInfluence = suppressParallax ? 0 : mobileMode ? 0.15 : inGallery3D ? 0.15 : 0.6;
             const baseY = inGallery3D ? GALLERY_OBJECT_Y : 2;
-            camera.position.y += (baseY + mouseY * yInfluence - camera.position.y) * camLerp;
+            camera.position.y += (baseY + mouseY * yInfluence - camera.position.y) * 0.05;
         }
         const lookAtY = inGallery3D ? GALLERY_OBJECT_Y : 1;
         camera.lookAt(camera.position.x * 0.3, lookAtY, camera.position.z - 8);
@@ -2570,8 +2449,7 @@ function animate() {
         logoGroup.position.y = heroLogoBaseY + Math.sin(time * 0.5) * 0.08;
 
         CARD_CATEGORIES.forEach((catSpec, i) => {
-            const baseY = mobileMode ? 0.55 : 1;
-            const bobY = baseY + Math.sin(time * 0.6 + i * 2) * 0.12;
+            const bobY = 1 + Math.sin(time * 0.6 + i * 2) * 0.12;
             const obj = (window as any).cssCardGroups?.[catSpec.key];
             if (obj) {
                 obj.position.y = bobY;
