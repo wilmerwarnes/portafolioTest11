@@ -533,38 +533,38 @@ scrollHintStyleEl.textContent = `
     .scroll-hint { bottom: 92px; }
 }
 
-/* === Desktop scroll hint (esquina inferior derecha) === */
+/* === Desktop scroll hint (centrado abajo) === */
 .scroll-hint-desktop {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%) translateY(20px);
     z-index: 15;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-    color: rgba(255,255,255,0.7);
-    text-align: right;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .scroll-hint-desktop.active {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 .scroll-hint-desktop-text {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     line-height: 1.3;
-    max-width: 220px;
+    max-width: 280px;
 }
 .scroll-hint-desktop-mouse {
-    width: 48px;
-    height: 64px;
+    width: 56px;
+    height: 72px;
     position: relative;
 }
 .scroll-hint-desktop-mouse svg {
