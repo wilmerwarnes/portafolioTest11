@@ -491,7 +491,7 @@ musicChoiceBtn?.addEventListener('click', () => {
 updateMusicChoiceLabel();
 
 // ==========================================================================
-// HINT DE SCROLL
+// HINT DE SCROLL — Móvil (centro) + Desktop (esquina inf. der. con ratón)
 // ==========================================================================
 const scrollHintStyleEl = document.createElement('style');
 scrollHintStyleEl.textContent = `
@@ -532,9 +532,63 @@ scrollHintStyleEl.textContent = `
 @media (max-width: 900px) {
     .scroll-hint { bottom: 92px; }
 }
+
+/* === Desktop scroll hint (esquina inferior derecha) === */
+.scroll-hint-desktop {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    color: rgba(255,255,255,0.7);
+    text-align: right;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-hint-desktop.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+.scroll-hint-desktop-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.3;
+    max-width: 220px;
+}
+.scroll-hint-desktop-mouse {
+    width: 48px;
+    height: 64px;
+    position: relative;
+}
+.scroll-hint-desktop-mouse svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+@media (max-width: 900px) {
+    .scroll-hint-desktop { display: none; }
+}
+
+/* Animaciones de la ruedita del ratón */
+@keyframes wheelScrollUp {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-8px); opacity: 0.4; }
+}
+@keyframes wheelScrollDown {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(8px); opacity: 0.4; }
+}
 `;
 document.head.appendChild(scrollHintStyleEl);
 
+// MÓVIL (centro) — ya existente
 const scrollHintEl = document.createElement('div');
 scrollHintEl.className = 'scroll-hint';
 scrollHintEl.id = 'scroll-hint';
@@ -545,17 +599,53 @@ scrollHintEl.innerHTML = `
 document.body.appendChild(scrollHintEl);
 const scrollHintTextEl = scrollHintEl.querySelector('#scroll-hint-text');
 
-// Texto del hint segun la seccion actual: distinto en Inicio (primera),
-// Contacto (ultima) y las del medio. SOLO se usa/muestra en movil — en
-// escritorio no hace falta este aviso.
+// DESKTOP (esquina inf. der. con ratón)
+const scrollHintDesktopEl = document.createElement('div');
+scrollHintDesktopEl.className = 'scroll-hint-desktop';
+scrollHintDesktopEl.id = 'scroll-hint-desktop';
+scrollHintDesktopEl.innerHTML = `
+    <span class="scroll-hint-desktop-text" id="scroll-hint-desktop-text"></span>
+    <div class="scroll-hint-desktop-mouse" id="scroll-hint-desktop-mouse">
+        <svg viewBox="0 0 48 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Cuerpo del ratón (blanco) -->
+            <path d="M24 2 C11.79 2 2 11.79 2 24 C2 36.21 11.79 46 24 46 C36.21 46 46 36.21 46 24 C46 11.79 36.21 2 24 2 Z" fill="white"/>
+            <!-- Ruedita (roja) - se animará con CSS -->
+            <circle class="scroll-wheel" cx="24" cy="16" r="6" fill="#ff3333"/>
+            <!-- Línea divisoria botones -->
+            <path d="M24 8 L24 24" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"/>
+        </svg>
+    </div>
+`;
+document.body.appendChild(scrollHintDesktopEl);
+const scrollHintDesktopTextEl = scrollHintDesktopEl.querySelector('#scroll-hint-desktop-text');
+const scrollWheelEl = scrollHintDesktopEl.querySelector('.scroll-wheel');
+
 function scrollHintTextForSection(sectionIndex) {
     const t = translations[currentLang];
     if (sectionIndex === 0) return t.scroll_hint_start;
     if (sectionIndex === SECTIONS.length - 1) return t.scroll_hint_end;
     return t.scroll_hint_mid;
 }
+function scrollHintDesktopTextForSection(sectionIndex) {
+    const t = translations[currentLang];
+    if (sectionIndex === 0) return t.scroll_hint_desktop_start;
+    if (sectionIndex === SECTIONS.length - 1) return t.scroll_hint_desktop_end;
+    return '';
+}
 function updateScrollHintText() {
     (scrollHintTextEl as HTMLElement).innerText = scrollHintTextForSection(currentSectionIndex);
+    (scrollHintDesktopTextEl as HTMLElement).innerText = scrollHintDesktopTextForSection(currentSectionIndex);
+    // Animar ruedita: arriba en inicio, abajo en contacto
+    const wheel = scrollWheelEl as HTMLElement | null;
+    if (wheel) {
+        if (currentSectionIndex === 0) {
+            wheel.style.animation = 'wheelScrollUp 1.2s ease-in-out infinite';
+        } else if (currentSectionIndex === SECTIONS.length - 1) {
+            wheel.style.animation = 'wheelScrollDown 1.2s ease-in-out infinite';
+        } else {
+            wheel.style.animation = 'none';
+        }
+    }
 }
 
 let scrollHintTimeout = null;
@@ -571,11 +661,35 @@ function hideScrollHint() {
     if (scrollHintTimeout) clearTimeout(scrollHintTimeout);
     scrollHintEl.classList.remove('active');
 }
+function showScrollHintDesktop() {
+    updateScrollHintText();
+    if (scrollHintTimeout) clearTimeout(scrollHintTimeout);
+    scrollHintDesktopEl.classList.add('active');
+    scrollHintTimeout = setTimeout(() => {
+        scrollHintDesktopEl.classList.remove('active');
+    }, 4000);
+}
+function hideScrollHintDesktop() {
+    if (scrollHintTimeout) clearTimeout(scrollHintTimeout);
+    scrollHintDesktopEl.classList.remove('active');
+}
 function updateScrollHintVisibility() {
-    if (experienceStarted && isMobileViewport()) {
-        showScrollHint();
+    if (experienceStarted) {
+        if (isMobileViewport()) {
+            showScrollHint();
+            hideScrollHintDesktop();
+        } else {
+            hideScrollHint();
+            // Solo mostrar en Inicio (0) y Contacto (última)
+            if (currentSectionIndex === 0 || currentSectionIndex === SECTIONS.length - 1) {
+                showScrollHintDesktop();
+            } else {
+                hideScrollHintDesktop();
+            }
+        }
     } else {
         hideScrollHint();
+        hideScrollHintDesktop();
     }
 }
 
